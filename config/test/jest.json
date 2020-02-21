@@ -1,0 +1,11 @@
+{
+  "rootDir": "../../",
+  "preset": "ts-jest",
+  "setupFiles": [
+    "<rootDir>/config/test/setupTest.ts"
+  ],
+  "restoreMocks": true,
+  "snapshotSerializers": [
+    "enzyme-to-json/serializer"
+  ]
+}
