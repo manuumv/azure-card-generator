@@ -1,5 +1,5 @@
 
-interface WorkItemRelation {
+export interface WorkItemRelation {
   target: TargetWorkItem;
 }
 

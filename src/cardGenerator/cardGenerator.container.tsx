@@ -3,6 +3,9 @@ import { Container, Typography } from '@material-ui/core';
 import { SelectComponent, CardComponent } from '../common/components';
 import { Sprint, Team, WorkItem } from '../model';
 import { getWorkItemRelations, getSprints, getTeams, getWorkItems } from './services';
+import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemsApiModelToVM } from './mappers';
+import { mapWorkItemRelationsApiModelToVM } from './mappers/mapWorkItemRelationsApiToVM';
+import { CardContainer } from './cardGenerator.container.styles';
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [teams, setTeams] = React.useState<Team[]>();
@@ -14,14 +17,14 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     getTeams()
-      .then((res) => setTeams(res.value))
+      .then((teamsResponse) => setTeams(mapTeamsApiModelToVM(teamsResponse)))
       .catch(console.log);
   }, []);
 
   React.useEffect(() => {
     if (selectedTeam) {
       getSprints(teams[selectedTeam].id)
-        .then((res) => setSprints(res.value))
+        .then((sprintsResponse) => setSprints(mapSprintsApiModelToVM(sprintsResponse)))
         .catch(console.log);
     }
 
@@ -33,9 +36,9 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   React.useEffect(() => {
     if (selectedTeam && selectedSprint) {
       getWorkItemRelations(teams[selectedTeam].id, sprints[selectedSprint].id)
-        .then((res) => {
-          const ids = res.workItemRelations.map((iteration) => iteration.target.id);
-          getWorkItems(ids).then((workItems) => setWorkItems(workItems.value));
+        .then((workItemRelations) => {
+          const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
+          getWorkItems(workItemIds).then((workItems) => setWorkItems(mapWorkItemsApiModelToVM(workItems)));
         })
         .catch(console.log);
     }
@@ -58,12 +61,14 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
         selectedValue={selectedSprint}
         onChangeOption={setSelectedSprint}
       />
-      {
-        Array.isArray(workItems) &&
-        workItems.map((workItem, index) => (
-          <CardComponent key={index} teamName={teams[selectedTeam].name} workItem={workItem} />
-        ))
-      }
+      <CardContainer>
+        {
+          Array.isArray(workItems) &&
+          workItems.map((workItem, index) => (
+            <CardComponent key={index} teamName={teams[selectedTeam].name} workItem={workItem} />
+          ))
+        }
+      </CardContainer>
     </Container>
   )
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { CardContent, Typography } from '@material-ui/core';
 import { WorkItem } from '../../../model';
+import { CardContainer } from './card.component.styles';
 
 interface Props {
   teamName: string;
@@ -8,11 +9,11 @@ interface Props {
 }
 
 export const CardComponent: React.FunctionComponent<Props> = ({ teamName, workItem }) => (
-  <Card variant="outlined">
+  <CardContainer variant="outlined">
     <CardContent>
       <Typography color="textSecondary" gutterBottom> {teamName} </Typography>
       <Typography color="textSecondary" gutterBottom> {workItem.fields["System.Title"]} </Typography>
       <Typography variant="body2" component="p"> {workItem.fields["System.System.Effort"]} </Typography>
     </CardContent>
-  </Card>
+  </CardContainer>
 )

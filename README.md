@@ -26,7 +26,7 @@ Run `npm run start:prod` for a production server with node. Navigate to `http://
 
 build image
 ```docker
-docker build -t react-app
+docker build -t react-app .
 ```
 
 run container
