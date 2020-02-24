@@ -5,9 +5,11 @@ export interface WorkItem {
   url: string;
 }
 
+export type WorkItemType = 'BUG' | 'PRODUCT BACKLOG ITEM';
+
 interface WorkItemFields {
   'System.Title': string;
-  'System.WorkItemType': string;
+  'System.WorkItemType': WorkItemType;
   'System.State': string;
-  'System.Effort': string;
+  'Microsoft.VSTS.Scheduling.Effort': string;
 }

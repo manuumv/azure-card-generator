@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { InputLabel, Select, MenuItem } from '@material-ui/core';
+import { FormControlContainer } from './select.component.styles';
 
 interface Props {
   values: any[];
@@ -16,7 +17,7 @@ export const SelectComponent: React.FunctionComponent<Props> = ({ selectedValue,
   }
 
   return (
-    <FormControl>
+    <FormControlContainer>
       <InputLabel shrink id={`label-${id}`}>{label}</InputLabel>
       <Select
         labelId={`label-${id}`}
@@ -32,6 +33,6 @@ export const SelectComponent: React.FunctionComponent<Props> = ({ selectedValue,
           <MenuItem value={index} key={index}>{value?.name}</MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </FormControlContainer>
   )
 }
