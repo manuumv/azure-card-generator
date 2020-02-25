@@ -3,10 +3,6 @@ export interface Sprint {
   name: string;
   path: string;
   url: string;
-  attributes: SprintAttributes;
-}
-
-interface SprintAttributes {
   startDate: Date;
   finishDate: Date;
   timeFrame: string;

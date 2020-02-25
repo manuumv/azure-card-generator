@@ -4,9 +4,9 @@ export interface WorkItemRelation {
 }
 
 interface TargetWorkItem {
-  id: string;
+  id: number;
 }
 
-export interface WorkItemRelations {
+export interface WorkItemRelationCollection {
   workItemRelations: WorkItemRelation[];
 }

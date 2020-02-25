@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WorkItem, WorkItemType } from '../../../model';
+import { WorkItem, WorkItemType } from '../../../model/view';
 import { CardContainer, getTitleComponent, Description, Effort, TeamName, FooterContainer, CardBody } from './card.component.styles';
 import { Divider } from '@material-ui/core';
 
@@ -10,18 +10,18 @@ interface Props {
 
 export const CardComponent: React.FunctionComponent<Props> = ({ teamName, workItem }) => {
 
-  const Title = getTitleComponent(workItem.fields["System.WorkItemType"].toUpperCase() as WorkItemType);
+  const Title = getTitleComponent(workItem.type);
 
   return (
     <CardContainer>
       <Title>{workItem.id}</Title>
       <Divider />
       <CardBody>
-        <Description>{workItem.fields["System.Title"]}</Description>
+        <Description>{workItem.title}</Description>
       </CardBody>
       <Divider />
       <FooterContainer>
-        <Effort>Effort: {workItem.fields["Microsoft.VSTS.Scheduling.Effort"]} </Effort>
+        <Effort>Effort: {workItem.effort} </Effort>
         <TeamName>{teamName}</TeamName>
       </FooterContainer>
     </CardContainer>

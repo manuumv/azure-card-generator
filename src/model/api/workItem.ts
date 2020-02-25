@@ -13,3 +13,8 @@ interface WorkItemFields {
   'System.State': string;
   'Microsoft.VSTS.Scheduling.Effort': string;
 }
+
+export interface WorkItemCollection {
+  value: WorkItem[],
+  count: number;
+}

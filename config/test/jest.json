@@ -7,5 +7,6 @@
   "restoreMocks": true,
   "snapshotSerializers": [
     "enzyme-to-json/serializer"
-  ]
+  ],
+  "automock": false
 }

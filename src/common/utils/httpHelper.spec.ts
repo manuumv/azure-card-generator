@@ -9,6 +9,7 @@ describe('httpHelper', () => {
       const url = '/test';
       const requestInit: RequestInit = { headers };
       const expectedResult = { ok: true };
+      const token = process.env.TOKEN;
       const response: MockParams = {
         status: 200,
         statusText: 'Accepted',
@@ -23,7 +24,7 @@ describe('httpHelper', () => {
         .then((response) => {
           // Assert
           expect(requestStub).toBeCalledWith(url, requestInit);
-          expect(setAuthorizationHeaderStub).toBeCalledWith(requestInit, null);
+          expect(setAuthorizationHeaderStub).toBeCalledWith(requestInit, token);
           expect(fetchMock.mock.calls[0][1]['headers']).toEqual(requestInit.headers);
           expect(response).toEqual(expectedResult);
         });
@@ -34,6 +35,7 @@ describe('httpHelper', () => {
       const url = '/test';
       const requestInit: RequestInit = { headers };
       const requestStub = jest.spyOn(httpHelper, 'request');
+      const token = process.env.TOKEN;
       const setAuthorizationHeaderStub = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization');
       const expectedResult = new Error('error');
       fetchMock.mockReject(expectedResult);
@@ -43,7 +45,7 @@ describe('httpHelper', () => {
         .catch((response) => {
           // Assert
           expect(requestStub).toBeCalledWith(url, requestInit);
-          expect(setAuthorizationHeaderStub).toBeCalledWith(requestInit, null);
+          expect(setAuthorizationHeaderStub).toBeCalledWith(requestInit, token);
           expect(fetchMock.mock.calls[0][1]['headers']).toEqual(requestInit.headers);
           expect(response).toEqual(expectedResult);
         });

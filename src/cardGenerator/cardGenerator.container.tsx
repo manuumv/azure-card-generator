@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Container, Button, AppBar } from '@material-ui/core';
 import { SelectComponent, CardComponent } from '../common/components';
-import { Sprint, Team, WorkItem } from '../model';
+import { Sprint, Team, WorkItem } from '../model/view';
 import { getWorkItemRelations, getSprints, getTeams, getWorkItems } from './services';
 import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemsApiModelToVM } from './mappers';
-import { mapWorkItemRelationsApiModelToVM } from './mappers/mapWorkItemRelationsApiToVM';
+import { mapWorkItemRelationsApiModelToVM } from './mappers/mapWorkItemRelationsApiModelToVM/mapWorkItemRelationsApiToVM';
 import { CardContainer, SelectContainer, Title } from './cardGenerator.container.styles';
 import ReactToPrint from 'react-to-print';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,7 +21,9 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
 
   const reactToPrintContent = () => componentToPrintRef.current;
 
-  const reactToPrintTrigger = () => <Button disabled={!(Array.isArray(workItems) && workItems.length > 0)} variant="outlined">Print !</Button>;
+  const reactToPrintTrigger = () => (
+    <Button disabled={!(Array.isArray(workItems) && workItems.length > 0)} variant="outlined">Print !</Button>
+  );
 
   React.useEffect(() => {
     getTeams()
@@ -74,7 +76,10 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
             selectedValue={selectedSprint}
             onChangeOption={setSelectedSprint}
           />
-          <ReactToPrint trigger={reactToPrintTrigger} content={reactToPrintContent} />
+          <ReactToPrint
+            trigger={reactToPrintTrigger}
+            content={reactToPrintContent}
+          />
         </SelectContainer>
         <CardContainer ref={componentToPrintRef}>
           {
