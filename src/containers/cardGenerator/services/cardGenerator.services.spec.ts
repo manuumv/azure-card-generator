@@ -1,4 +1,4 @@
-import * as httpHelper from '../../common/utils';
+import * as httpHelper from '../../../utils';
 import { getSprints, getTeams, getWorkItemRelations, getWorkItems } from './cardGenerator.services';
 import { teamsEndpoint, sprintEndpoint, iterationEndpoint, workItemsEndpoint } from './endpoints';
 

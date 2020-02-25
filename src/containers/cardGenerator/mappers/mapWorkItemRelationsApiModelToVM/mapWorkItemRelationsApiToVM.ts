@@ -1,4 +1,4 @@
-import * as ApiModel from "../../../model/api";
+import * as ApiModel from "../../../../model/api";
 
 export const mapWorkItemRelationsApiModelToVM = (workItemRelationCollection: ApiModel.WorkItemRelationCollection): number[] => (
   workItemRelationCollection && Array.isArray(workItemRelationCollection.workItemRelations) ?

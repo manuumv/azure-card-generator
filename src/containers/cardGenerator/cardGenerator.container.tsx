@@ -1,18 +1,20 @@
 import * as React from 'react';
 import { Container, Button, AppBar } from '@material-ui/core';
-import { SelectComponent, CardComponent } from '../common/components';
-import { Sprint, Team, WorkItem } from '../model/view';
+import { Sprint, Team, WorkItem } from '../../model/view';
 import { getWorkItemRelations, getSprints, getTeams, getWorkItems } from './services';
 import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemsApiModelToVM } from './mappers';
 import { mapWorkItemRelationsApiModelToVM } from './mappers/mapWorkItemRelationsApiModelToVM/mapWorkItemRelationsApiToVM';
-import { CardContainer, SelectContainer, Title } from './cardGenerator.container.styles';
+import { CardContainer, SelectContainer, Title, CardPage } from './cardGenerator.container.styles';
 import ReactToPrint from 'react-to-print';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { splitEvery } from 'ramda';
+import { CardPageComponent } from './components/card/cardPage.component';
+import { SelectComponent } from './components/select';
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [teams, setTeams] = React.useState<Team[]>();
   const [sprints, setSprints] = React.useState<Sprint[]>();
-  const [workItems, setWorkItems] = React.useState<WorkItem[]>();
+  const [workItems, setWorkItems] = React.useState<WorkItem[][]>();
 
   const [selectedTeam, setSelectedTeam] = React.useState<string | number>('');
   const [selectedSprint, setSelectedSprint] = React.useState<string | number>('');
@@ -22,7 +24,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   const reactToPrintContent = () => componentToPrintRef.current;
 
   const reactToPrintTrigger = () => (
-    <Button disabled={!(Array.isArray(workItems) && workItems.length > 0)} variant="outlined">Print !</Button>
+    <Button disabled={!(Array.isArray(workItems) && workItems.length > 0)} variant="outlined">Print</Button>
   );
 
   React.useEffect(() => {
@@ -48,7 +50,10 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
       getWorkItemRelations(teams[selectedTeam].id, sprints[selectedSprint].id)
         .then((workItemRelations) => {
           const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
-          getWorkItems(workItemIds).then((workItems) => setWorkItems(mapWorkItemsApiModelToVM(workItems)));
+          getWorkItems(workItemIds).then((workItems) => {
+            const mappedWorkItems = mapWorkItemsApiModelToVM(workItems);
+            setWorkItems(splitEvery(10, mappedWorkItems));
+          });
         })
         .catch(console.log);
     }
@@ -82,14 +87,10 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
           />
         </SelectContainer>
         <CardContainer ref={componentToPrintRef}>
-          {
-            Array.isArray(workItems) &&
-            workItems.map((workItem, index) => (
-              <CardComponent key={index} teamName={teams[selectedTeam].name} workItem={workItem} />
-            ))
-          }
+          <CardPageComponent workItems={workItems} teamName={selectedTeam && teams[selectedTeam]?.name} />
         </CardContainer>
       </Container >
     </>
   )
 }
+

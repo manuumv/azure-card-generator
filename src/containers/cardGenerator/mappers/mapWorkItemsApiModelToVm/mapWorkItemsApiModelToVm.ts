@@ -1,5 +1,5 @@
-import * as ApiModel from "../../../model/api";
-import * as ViewModel from "../../../model/view";
+import * as ApiModel from "../../../../model/api";
+import * as ViewModel from "../../../../model/view";
 
 export const mapWorkItemsApiModelToVM = (workItems: ApiModel.WorkItemCollection): ViewModel.WorkItem[] => (
   workItems && Array.isArray(workItems.value) ?

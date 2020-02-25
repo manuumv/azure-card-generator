@@ -1,6 +1,6 @@
-import { get } from "../../common/utils";
+import { get } from "../../../utils";
 import { teamsEndpoint, sprintEndpoint, iterationEndpoint, workItemsEndpoint } from './endpoints';
-import { TeamCollection, SprintCollection, WorkItemCollection, WorkItemRelationCollection } from '../../model/api';
+import { TeamCollection, SprintCollection, WorkItemCollection, WorkItemRelationCollection } from '../../../model/api';
 
 export const getTeams = async () => await get<TeamCollection>(teamsEndpoint);
 
