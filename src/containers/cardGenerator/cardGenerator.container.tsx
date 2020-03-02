@@ -1,63 +1,58 @@
 import * as React from 'react';
-import { Container, Button, AppBar } from '@material-ui/core';
-import { Sprint, Team, WorkItem } from '../../model/view';
-import { getWorkItemRelations, getSprints, getTeams, getWorkItems } from './services';
-import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemsApiModelToVM } from './mappers';
-import { mapWorkItemRelationsApiModelToVM } from './mappers/mapWorkItemRelationsApiModelToVM/mapWorkItemRelationsApiToVM';
-import { CardContainer, SelectContainer, Title, CardPage } from './cardGenerator.container.styles';
-import ReactToPrint from 'react-to-print';
+import { AppBar, Button, Container } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { splitEvery } from 'ramda';
+import { Project, Sprint, Team, WorkItem } from '../../model/view';
+import { Title } from './cardGenerator.container.styles';
 import { CardPageComponent } from './components/card/cardPage.component';
-import { SelectComponent } from './components/select';
+import { FilterComponent } from './components/filter';
+import { SelectOptionsComponent } from './components/selectOptions';
+import { mapProjectsApiModelToVM } from './mappers';
+import { getProjects } from './services';
+import { uniq, splitEvery } from 'ramda';
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
+  const [projects, setProjects] = React.useState<Project[]>();
   const [teams, setTeams] = React.useState<Team[]>();
   const [sprints, setSprints] = React.useState<Sprint[]>();
-  const [workItems, setWorkItems] = React.useState<WorkItem[][]>();
-
-  const [selectedTeam, setSelectedTeam] = React.useState<string | number>('');
-  const [selectedSprint, setSelectedSprint] = React.useState<string | number>('');
+  const [workItems, setWorkItems] = React.useState<WorkItem[]>();
+  const [teamName, setTeamName] = React.useState<string>('');
+  const [filters, setFilters] = React.useState<string[]>([]);
 
   const componentToPrintRef = React.useRef();
-
   const reactToPrintContent = () => componentToPrintRef.current;
-
   const reactToPrintTrigger = () => (
     <Button disabled={!(Array.isArray(workItems) && workItems.length > 0)} variant="outlined">Print</Button>
   );
 
   React.useEffect(() => {
-    getTeams()
-      .then((teamsResponse) => setTeams(mapTeamsApiModelToVM(teamsResponse)))
+    getProjects()
+      .then((projectsResponse) => setProjects(mapProjectsApiModelToVM(projectsResponse)))
       .catch(console.log);
   }, []);
 
-  React.useEffect(() => {
-    if (selectedTeam) {
-      getSprints(teams[selectedTeam].id)
-        .then((sprintsResponse) => setSprints(mapSprintsApiModelToVM(sprintsResponse)))
-        .catch(console.log);
-    }
+  const handleChangeTeam = React.useCallback((setTeams), [projects, teams]);
+  const handleChangeSprint = React.useCallback(((sprints: Sprint[], teamName: string) => {
+    setTeamName(teamName);
+    setSprints(sprints);
+  }), [projects, teams, sprints, teamName]);
+  const handleChangeWorkItems = React.useCallback((setWorkItems), [workItems]);
+  const handleChangeFilters = React.useCallback(((event: React.ChangeEvent<{ name?: string; value: string[] }>) => {
+    setFilters(event.target.value)
+  }), [filters]);
 
-    setWorkItems([]);
-    setSprints([]);
-    setSelectedSprint('');
-  }, [selectedTeam]);
-
-  React.useEffect(() => {
-    if (selectedTeam && selectedSprint) {
-      getWorkItemRelations(teams[selectedTeam].id, sprints[selectedSprint].id)
-        .then((workItemRelations) => {
-          const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
-          getWorkItems(workItemIds).then((workItems) => {
-            const mappedWorkItems = mapWorkItemsApiModelToVM(workItems);
-            setWorkItems(splitEvery(10, mappedWorkItems));
-          });
-        })
-        .catch(console.log);
+  const states = React.useMemo(() => {
+    if(workItems) {
+      const states = uniq(workItems.flat().map(({ state }) => state));
+      setFilters(states);
+      return states;
     }
-  }, [selectedTeam, selectedSprint]);
+  }, [workItems]);
+
+  const filteredWorkItems = React.useMemo(() => {
+    const filterWorkItems = workItems && workItems.filter((workItem) => filters.includes(workItem.state));
+    const paginatedWorkItems = filterWorkItems && splitEvery(10, filterWorkItems);
+    return paginatedWorkItems;
+  }, [filters,states, workItems]);
 
   return (
     <>
@@ -66,29 +61,20 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
         <Title variant="h4">AZURE CARD GENERATOR</Title>
       </AppBar>
       <Container>
-        <SelectContainer>
-          <SelectComponent
-            id="teams"
-            label="Teams:"
-            values={teams}
-            selectedValue={selectedTeam}
-            onChangeOption={setSelectedTeam}
-          />
-          <SelectComponent
-            id="sprints"
-            label="Sprints:"
-            values={sprints}
-            selectedValue={selectedSprint}
-            onChangeOption={setSelectedSprint}
-          />
-          <ReactToPrint
-            trigger={reactToPrintTrigger}
-            content={reactToPrintContent}
-          />
-        </SelectContainer>
-        <CardContainer ref={componentToPrintRef}>
-          <CardPageComponent workItems={workItems} teamName={selectedTeam && teams[selectedTeam]?.name} />
-        </CardContainer>
+        <SelectOptionsComponent
+          teams={teams}
+          sprints={sprints}
+          projects={projects}
+          handleChangeTeam={handleChangeTeam}
+          handleChangeSprint={handleChangeSprint}
+          handleChangeWorkItems={handleChangeWorkItems}
+          reactToPrintTrigger={reactToPrintTrigger}
+          reactToPrintContent={reactToPrintContent}
+        />
+        <FilterComponent states={states} filters={filters} handleChangeFilters={handleChangeFilters} />
+        <div ref={componentToPrintRef}>
+          <CardPageComponent workItems={filteredWorkItems} teamName={teamName} />
+        </div>
       </Container >
     </>
   )

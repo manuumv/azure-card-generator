@@ -1,15 +1,19 @@
-import { get } from "../../../utils";
-import { teamsEndpoint, sprintEndpoint, iterationEndpoint, workItemsEndpoint } from './endpoints';
-import { TeamCollection, SprintCollection, WorkItemCollection, WorkItemRelationCollection } from '../../../model/api';
+import { get } from "../../../common/utils/httpHelper";
+import { teamsEndpoint, sprintEndpoint, iterationEndpoint, workItemsEndpoint, projectEndpoint } from './endpoints';
+import { TeamCollection, SprintCollection, WorkItemCollection, WorkItemRelationCollection, ProjectCollection } from '../../../model/api';
 
-export const getTeams = async () => await get<TeamCollection>(teamsEndpoint);
+export const getProjects = async () => await get<ProjectCollection>(projectEndpoint);
 
-export const getSprints = async (boardId: string) => await get<SprintCollection>(sprintEndpoint(boardId));
+export const getTeams = async (projectName: string) => await get<TeamCollection>(teamsEndpoint(projectName));
 
-export const getWorkItemRelations = async (teamId: string, iterationId: string) => (
-  await get<WorkItemRelationCollection>(iterationEndpoint(teamId, iterationId))
+export const getSprints = async (projectName: string, boardId: string) => (
+  await get<SprintCollection>(sprintEndpoint(projectName, boardId))
 );
 
-export const getWorkItems = async (workItemsIds: number[]) => (
-  await get<WorkItemCollection>(workItemsEndpoint(workItemsIds))
+export const getWorkItemRelations = async (projectName: string, teamId: string, iterationId: string) => (
+  await get<WorkItemRelationCollection>(iterationEndpoint(projectName, teamId, iterationId))
+);
+
+export const getWorkItems = async (projectName: string, workItemsIds: number[]) => (
+  await get<WorkItemCollection>(workItemsEndpoint(projectName, workItemsIds))
 )

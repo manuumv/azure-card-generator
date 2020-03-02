@@ -4,7 +4,7 @@ import { WorkItemType } from "../../../../model/view";
 export const CardContainer = styled(Card)({
   width: '40vw',
   height: '18vh',
-  marginBottom: '2px',
+  marginBottom: '3px',
   padding: 0,
   display: 'flex',
   flexDirection: 'column',

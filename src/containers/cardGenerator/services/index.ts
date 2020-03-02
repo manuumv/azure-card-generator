@@ -1,1 +1,1 @@
-export { getSprints, getTeams, getWorkItemRelations, getWorkItems } from './cardGenerator.services';
+export { getSprints, getTeams, getWorkItemRelations, getWorkItems, getProjects } from './cardGenerator.services';

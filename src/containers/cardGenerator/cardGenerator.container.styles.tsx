@@ -1,8 +1,5 @@
 import { styled, FormGroup, Typography } from "@material-ui/core";
 
-export const CardContainer = styled('div')({
-})
-
 export const CardPage = styled('div')({
   display: 'flex',
   flexDirection: 'row',

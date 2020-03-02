@@ -6,6 +6,6 @@ export const CardPage = styled('div')({
   maxHeight: '100vh',
   flexWrap: 'wrap',
   justifyContent: 'space-between',
-  padding: '15px',
+  padding: '5vh',
   pageBreakAfter: 'always',
 })

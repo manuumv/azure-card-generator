@@ -5,7 +5,7 @@ import { FormControlContainer } from './select.component.styles';
 interface Props {
   values: any[];
   selectedValue: number | string;
-  onChangeOption: React.Dispatch<React.SetStateAction<any>>;
+  onChangeOption: (value: number | string) => void;
   label: string;
   id: string;
 }

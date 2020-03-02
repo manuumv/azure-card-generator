@@ -8,19 +8,21 @@ interface Props {
   teamName: string;
 }
 
-export const CardPageComponent: React.FunctionComponent<Props> = ({ workItems, teamName }) => (
-  <>
-    {
-      Array.isArray(workItems) &&
-      workItems.map((childWorkItems, index) => (
-        <CardPage key={index}>
-          {
-            childWorkItems.map((childWorkItem) => (
-              <CardComponent key={childWorkItem.id} teamName={teamName} workItem={childWorkItem} />
-            ))
-          }
-        </CardPage >
-      ))
-    }
-  </>
-)
+export const CardPageComponent: React.FunctionComponent<Props> = ({ workItems, teamName }) => {
+  return (
+    <>
+      {
+        Array.isArray(workItems) &&
+        workItems.map((childWorkItems, index) => (
+          <CardPage key={index}>
+            {
+              childWorkItems.map((childWorkItem) => (
+                <CardComponent key={childWorkItem.id} teamName={teamName} workItem={childWorkItem} />
+              ))
+            }
+          </CardPage >
+        ))
+      }
+    </>
+  )
+}
