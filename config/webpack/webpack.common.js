@@ -51,6 +51,16 @@ module.exports = {
         test: /\.(png|jpg|ico|gif)?$/,
         loader: 'url-loader?limit=10000',
       },
+      {
+        include: /node_modules\/react-dom/,
+        test: /\.jsx?$/,
+        use: {
+          loader: 'react-hot-loader/webpack',
+          options: {
+            noRegister: true,
+          },
+        },
+      },
     ]
   },
   plugins: [

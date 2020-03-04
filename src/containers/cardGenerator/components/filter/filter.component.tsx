@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Select, Checkbox, ListItemText, MenuItem, Input, FormControl } from '@material-ui/core';
+import { Select, Checkbox, ListItemText, MenuItem, FormControl } from '@material-ui/core';
 import { Label, SelectInput } from './filter.component.styles';
 
 interface Props {

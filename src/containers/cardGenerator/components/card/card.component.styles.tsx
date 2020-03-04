@@ -2,7 +2,7 @@ import { styled, Card, Typography, CardContent } from "@material-ui/core";
 import { WorkItemType } from "../../../../model/view";
 
 export const CardContainer = styled(Card)({
-  width: '40vw',
+  width: '45%',
   height: '18vh',
   marginBottom: '3px',
   padding: 0,
