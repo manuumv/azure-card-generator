@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { WorkItem, WorkItemType } from '../../../../model/view';
-import { CardContainer, getTitleComponent, Description, Effort, TeamName, FooterContainer, CardBody } from './card.component.styles';
+import { WorkItem } from '../../../../model/view';
+import { CardContainer, getTypeComponent, Description, Effort, TeamName, FooterContainer, CardBody, Title, HeaderContainer } from './card.component.styles';
 import { Divider } from '@material-ui/core';
 
 interface Props {
@@ -10,19 +10,22 @@ interface Props {
 
 export const CardComponent: React.FunctionComponent<Props> = ({ teamName, workItem }) => {
 
-  const Title = getTitleComponent(workItem.type);
+  const Type = getTypeComponent(workItem.type);
 
   return (
     <CardContainer>
-      <Title>{workItem.id}</Title>
+      <HeaderContainer>
+        <Type>{workItem.type}</Type>
+        <Title>{workItem.id}</Title>
+      </HeaderContainer>
       <Divider />
       <CardBody>
         <Description>{workItem.title}</Description>
       </CardBody>
       <Divider />
       <FooterContainer>
-        <Effort>Effort: {workItem.effort} </Effort>
         <TeamName>{teamName}</TeamName>
+        <Effort>Effort: {workItem.effort} </Effort>
       </FooterContainer>
     </CardContainer>
   )
