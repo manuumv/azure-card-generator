@@ -1,4 +1,6 @@
 import { headers } from './constants';
+import { localStorageLoginInfo } from '../../services';
+import { LoginInfo } from '../../../model/entities';
 
 export const get = async <T>(endPoint: string): Promise<T> => request(endPoint, { headers, method: 'GET' });
 
@@ -15,8 +17,7 @@ export const post = <T>(endPoint: string, bodyObject: object, hasResponseContent
 );
 
 export const request = async <T>(endPoint: string, requestInit: RequestInit, hasResponseContent?: boolean): Promise<T> => {
-  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, process.env.TOKEN));
-
+  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, localStorageLoginInfo.get()));
   if (response.ok) {
     if (hasResponseContent || response.status === 200) {
       return await response.json();
@@ -27,17 +28,14 @@ export const request = async <T>(endPoint: string, requestInit: RequestInit, has
   }
 }
 
-export const getRequestInitWithAuthorization = (requestInit: RequestInit, token?: string): RequestInit => (
+export const getRequestInitWithAuthorization = (requestInit: RequestInit, { token, username }: LoginInfo): RequestInit => (
   token ?
     {
       ...requestInit,
       headers: {
         ...requestInit.headers,
-        Authorization: authorization,
+        Authorization: `Basic ${btoa(`${username}:${token}`)}`,
       }
     } :
     requestInit
 );
-
-const authorization = `Basic ${btoa(`${process.env.USERNAME}:${process.env.TOKEN}`)}`
-

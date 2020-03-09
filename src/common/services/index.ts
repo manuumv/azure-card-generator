@@ -1,0 +1,1 @@
+export { localStorageAccountInfo } from './loginInfo';
