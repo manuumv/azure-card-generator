@@ -1,6 +1,6 @@
 import { headers } from './constants';
-import { localStorageLoginInfo } from '../../services';
-import { LoginInfo } from '../../../model/entities';
+import { localStorageAccountInfo } from '../../services';
+import { AccountInfo } from '../../../model/entities';
 
 export const get = async <T>(endPoint: string): Promise<T> => request(endPoint, { headers, method: 'GET' });
 
@@ -17,7 +17,7 @@ export const post = <T>(endPoint: string, bodyObject: object, hasResponseContent
 );
 
 export const request = async <T>(endPoint: string, requestInit: RequestInit, hasResponseContent?: boolean): Promise<T> => {
-  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, localStorageLoginInfo.get()));
+  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, localStorageAccountInfo.get()));
   if (response.ok) {
     if (hasResponseContent || response.status === 200) {
       return await response.json();
@@ -28,7 +28,7 @@ export const request = async <T>(endPoint: string, requestInit: RequestInit, has
   }
 }
 
-export const getRequestInitWithAuthorization = (requestInit: RequestInit, { token, username }: LoginInfo): RequestInit => (
+export const getRequestInitWithAuthorization = (requestInit: RequestInit, { token, username }: AccountInfo): RequestInit => (
   token ?
     {
       ...requestInit,

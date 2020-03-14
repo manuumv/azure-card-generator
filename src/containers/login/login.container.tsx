@@ -14,11 +14,12 @@ export const LoginContainer: React.FunctionComponent = () => {
   const onChangeOrganization = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setOrganization(value);
 
   const onClickLogin = async () => {
-    if(!username || !token || !organization) {
+    if (!username || !token || !organization) {
       return;
     }
+
     try {
-      localStorageAccountInfo.set({username, token, organization});
+      localStorageAccountInfo.set({ username, token, organization });
       await login(organization);
     } catch (error) {
       localStorageAccountInfo.remove();
