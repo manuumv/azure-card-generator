@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { InputLabel, Select, MenuItem } from '@material-ui/core';
 import { FormControlContainer } from './select.component.styles';
+import { SelectValue } from '../../../model/entities';
 
 interface Props {
-  values: any[];
+  values: SelectValue[];
   selectedValue: number | string;
   onChangeOption: (value: number | string) => void;
   label: string;
@@ -29,8 +30,8 @@ export const SelectComponent: React.FunctionComponent<Props> = ({ selectedValue,
         <MenuItem value={''}>
           <em>None</em>
         </MenuItem>
-        {Array.isArray(values) && values.map((value, index) => (
-          <MenuItem value={index} key={index}>{value?.name}</MenuItem>
+        {Array.isArray(values) && values.map(({ name, value }, index) => (
+          <MenuItem value={value} key={index}>{name}</MenuItem>
         ))}
       </Select>
     </FormControlContainer>

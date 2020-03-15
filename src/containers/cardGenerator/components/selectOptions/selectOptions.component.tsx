@@ -7,6 +7,7 @@ import { isNumber } from '../../../../common/utils';
 import { getTeams, getSprints, getWorkItemRelations, getWorkItems } from '../../services';
 import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemRelationsApiModelToVM, mapWorkItemsApiModelToVM } from '../../mappers';
 import { UserService } from '../../../../common/services';
+import { mapToSelectOptions } from '../../../../common/mappers';
 
 interface Props {
   teams: Team[];
@@ -78,21 +79,21 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
       <SelectComponent
         id="projects"
         label="Projects:"
-        values={props.projects}
+        values={mapToSelectOptions<Project>(props.projects, 'name')}
         selectedValue={selectedProject}
         onChangeOption={onSelectProject}
       />
       <SelectComponent
         id="teams"
         label="Teams:"
-        values={props.teams}
+        values={mapToSelectOptions<Team>(props.teams, 'name')}
         selectedValue={selectedTeam}
         onChangeOption={onSelectTeam}
       />
       <SelectComponent
         id="sprints"
         label="Sprints:"
-        values={props.sprints}
+        values={mapToSelectOptions<Sprint>(props.sprints, 'name')}
         selectedValue={selectedSprint}
         onChangeOption={onSelectSprint}
       />
