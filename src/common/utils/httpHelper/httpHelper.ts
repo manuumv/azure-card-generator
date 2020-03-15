@@ -1,6 +1,6 @@
 import { headers } from './constants';
-import { localStorageAccountInfo } from '../../services';
-import { AccountInfo } from '../../../model/entities';
+import { UserService } from '../../services';
+import { User } from '../../../model/entities';
 
 export const get = async <T>(endPoint: string): Promise<T> => request(endPoint, { headers, method: 'GET' });
 
@@ -17,7 +17,7 @@ export const post = <T>(endPoint: string, bodyObject: object, hasResponseContent
 );
 
 export const request = async <T>(endPoint: string, requestInit: RequestInit, hasResponseContent?: boolean): Promise<T> => {
-  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, localStorageAccountInfo.get()));
+  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, UserService.get()));
   if (response.ok) {
     if (hasResponseContent || response.status === 200) {
       return await response.json();
@@ -28,13 +28,13 @@ export const request = async <T>(endPoint: string, requestInit: RequestInit, has
   }
 }
 
-export const getRequestInitWithAuthorization = (requestInit: RequestInit, { token, username }: AccountInfo): RequestInit => (
+export const getRequestInitWithAuthorization = (requestInit: RequestInit, { token, name }: User): RequestInit => (
   token ?
     {
       ...requestInit,
       headers: {
         ...requestInit.headers,
-        Authorization: `Basic ${btoa(`${username}:${token}`)}`,
+        Authorization: `Basic ${btoa(`${name}:${token}`)}`,
       }
     } :
     requestInit

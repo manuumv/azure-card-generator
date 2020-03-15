@@ -1,4 +1,4 @@
-import { styled, Button, TextField } from "@material-ui/core";
+import { styled, Button, TextField, FormControlLabel } from "@material-ui/core";
 
 export const ContainerStyled = styled('div')({
   height: '100vh',
@@ -15,7 +15,7 @@ export const LoginContainerStyled = styled('div')({
   padding: '30px',
   boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
   transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
-  minWidth: '40vw',
+  width: '100%',
   maxWidth: '600px',
 })
 
@@ -27,4 +27,8 @@ export const Input = styled(TextField)({
 export const LoginButton = styled(Button)({
   width: '100%',
   marginTop: '16px',
+})
+
+export const FormControlCheckbox = styled(FormControlLabel)({
+  width: '100%',
 })

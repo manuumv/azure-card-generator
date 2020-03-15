@@ -9,7 +9,7 @@ import { FilterComponent } from "./components/filter";
 import { SelectOptionsComponent } from "./components/selectOptions";
 import { mapProjectsApiModelToVM } from "./mappers";
 import { getProjects } from "./services";
-import { localStorageAccountInfo } from "../../common/services";
+import { UserService } from "../../common/services";
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [projects, setProjects] = React.useState<Project[]>();
@@ -30,7 +30,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     </Button>
   );
 
-  const organization = localStorageAccountInfo.get()?.organization;
+  const organization = UserService.get()?.organization;
 
   React.useEffect(() => {
     getProjects(organization)

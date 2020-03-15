@@ -1,1 +1,1 @@
-export { AccountInfo } from './loginInfo';
+export { User } from './User';

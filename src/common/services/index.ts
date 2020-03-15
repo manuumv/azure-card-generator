@@ -1,1 +1,1 @@
-export { localStorageAccountInfo } from './loginInfo';
+export { UserService } from './user';

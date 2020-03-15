@@ -6,7 +6,7 @@ import { Team, Sprint, Project, WorkItem } from '../../../../model/view';
 import { isNumber } from '../../../../common/utils';
 import { getTeams, getSprints, getWorkItemRelations, getWorkItems } from '../../services';
 import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemRelationsApiModelToVM, mapWorkItemsApiModelToVM } from '../../mappers';
-import { localStorageAccountInfo } from '../../../../common/services';
+import { UserService } from '../../../../common/services';
 
 interface Props {
   teams: Team[];
@@ -24,7 +24,7 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
   const [selectedTeam, setSelectedTeam] = React.useState<string | number>('');
   const [selectedSprint, setSelectedSprint] = React.useState<string | number>('');
 
-  const organization = localStorageAccountInfo.get()?.organization;
+  const organization = UserService.get()?.organization;
 
   React.useEffect(() => {
     setSelectedTeam('');

@@ -1,13 +1,13 @@
 import *  as React from 'react';
 import { Toolbar, Button } from '@material-ui/core';
 import { Title, HeaderBar, UserName } from './appBar.component.styles';
-import { ReactLoginContext } from '../../../../common/providers';
-import { localStorageAccountInfo } from '../../../../common/services';
+import { LoginContext } from '../../../../common/providers';
+import { UserService } from '../../../../common/services';
 
 export const AppBarComponent: React.FunctionComponent = () => {
-  const { onLogout } = React.useContext(ReactLoginContext);
+  const { onLogout } = React.useContext(LoginContext);
 
-  const username = localStorageAccountInfo.get()?.username;
+  const username = UserService.get()?.name;
 
   return (
     <HeaderBar position="relative">

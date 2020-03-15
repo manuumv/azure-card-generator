@@ -1,1 +1,1 @@
-export { ReactLoginContext, ReactLoginInfoProvider } from './loginInfoContext';
+export { LoginContext, LoginProvider } from './loginContext';
