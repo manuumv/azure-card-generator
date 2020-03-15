@@ -3,7 +3,7 @@ import { AccountInfo } from "../../model/entities";
 import { localStorageAccountInfo } from "../services";
 
 interface AccountInfoContext {
-  onLogin: (accountInfo: AccountInfo) => void;
+  onLogin: () => void;
   onLogout: () => void;
   isUserLogged: boolean;
 }
@@ -23,14 +23,15 @@ export const ReactLoginInfoProvider: React.FunctionComponent = props => {
 
   React.useEffect(() => {
     const loggedInfo = localStorageAccountInfo.get();
-
-    if (loggedInfo) {
-      setIsUserLogged(true);
-    }
+    loggedInfo ? setIsUserLogged(true) : setIsUserLogged(false);
   }, []);
 
-  const onLogout = React.useCallback(() => localStorageAccountInfo.remove(), []);
-  const onLogin = React.useCallback(() => setIsUserLogged(true), [isUserLogged]);
+  const onLogout = React.useCallback(() => {
+    localStorageAccountInfo.remove();
+    setIsUserLogged(false);
+  }, []);
+
+  const onLogin = React.useCallback(() => setIsUserLogged(true), []);
 
   return (
     <ReactLoginContext.Provider value={{ isUserLogged, onLogin, onLogout }}>

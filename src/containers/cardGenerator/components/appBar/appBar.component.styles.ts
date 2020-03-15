@@ -1,6 +1,12 @@
-import { styled, Typography } from "@material-ui/core";
+import { styled, Typography, AppBar } from "@material-ui/core";
+
+export const HeaderBar = styled(AppBar)({});
 
 export const Title = styled(Typography)({
   textAlign: 'center',
-  marginRigth: 'auto'
-})
+  marginRight: 'auto'
+});
+
+export const UserName = styled(Typography)({
+  marginRight: '10px'
+});

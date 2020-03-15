@@ -6,6 +6,7 @@ import { Team, Sprint, Project, WorkItem } from '../../../../model/view';
 import { isNumber } from '../../../../common/utils';
 import { getTeams, getSprints, getWorkItemRelations, getWorkItems } from '../../services';
 import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemRelationsApiModelToVM, mapWorkItemsApiModelToVM } from '../../mappers';
+import { localStorageAccountInfo } from '../../../../common/services';
 
 interface Props {
   teams: Team[];
@@ -22,6 +23,8 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
   const [selectedProject, setSelectedProject] = React.useState<string | number>('');
   const [selectedTeam, setSelectedTeam] = React.useState<string | number>('');
   const [selectedSprint, setSelectedSprint] = React.useState<string | number>('');
+
+  const organization = localStorageAccountInfo.get()?.organization;
 
   React.useEffect(() => {
     setSelectedTeam('');
@@ -41,7 +44,7 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
   const onSelectProject = (value: string | number) => {
     setSelectedProject(value);
     if (isNumber(value)) {
-      getTeams(props.projects[value].name)
+      getTeams(organization, props.projects[value].name)
         .then((teamsResponse) => props.handleChangeTeam(mapTeamsApiModelToVM(teamsResponse)))
         .catch(console.log);
     }
@@ -50,7 +53,7 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
   const onSelectTeam = (value: string | number) => {
     setSelectedTeam(value);
     if (isNumber(value)) {
-      getSprints(props.projects[selectedProject].name, props.teams[value].id)
+      getSprints(organization, props.projects[selectedProject].name, props.teams[value].id)
         .then((sprintsResponse) => props.handleChangeSprint(mapSprintsApiModelToVM(sprintsResponse), props.teams[value].name))
         .catch(console.log);
     }
@@ -59,10 +62,10 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
   const onSelectSprint = (value: string | number) => {
     setSelectedSprint(value);
     if (isNumber(value)) {
-      getWorkItemRelations(props.projects[selectedProject].name, props.teams[selectedTeam].id, props.sprints[value].id)
+      getWorkItemRelations(organization, props.projects[selectedProject].name, props.teams[selectedTeam].id, props.sprints[value].id)
         .then((workItemRelations) => {
           const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
-          getWorkItems(props.projects[selectedProject].name, workItemIds).then((workItems) => {
+          getWorkItems(organization, props.projects[selectedProject].name, workItemIds).then((workItems) => {
             props.handleChangeWorkItems(mapWorkItemsApiModelToVM(workItems));
           });
         })

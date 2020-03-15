@@ -1,17 +1,21 @@
 import *  as React from 'react';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
-import { Title } from './appBar.component.styles';
+import { Toolbar, Button } from '@material-ui/core';
+import { Title, HeaderBar, UserName } from './appBar.component.styles';
 import { ReactLoginContext } from '../../../../common/providers';
-
+import { localStorageAccountInfo } from '../../../../common/services';
 
 export const AppBarComponent: React.FunctionComponent = () => {
-  const { onLogout } = React.useContext(ReactLoginContext)
+  const { onLogout } = React.useContext(ReactLoginContext);
+
+  const username = localStorageAccountInfo.get()?.username;
+
   return (
-    <AppBar position="relative">
+    <HeaderBar position="relative">
       <Toolbar>
         <Title variant="h4">AZURE CARD GENERATOR</Title>
-        <Button onClick={onLogout} color="inherit">Logout</Button>
+        <UserName>{username}</UserName>
+        <Button variant="outlined" onClick={onLogout} color="inherit">Logout</Button>
       </Toolbar>
-    </AppBar>
+    </HeaderBar>
   )
 }

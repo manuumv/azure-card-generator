@@ -3,11 +3,14 @@ import { LoginContainerStyled, ContainerStyled, LoginButton, Input } from './log
 import { CssBaseline } from '@material-ui/core';
 import { login } from './services';
 import { localStorageAccountInfo } from '../../common/services';
+import { ReactLoginContext } from '../../common/providers';
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [username, setUsername] = React.useState<string>('');
   const [token, setToken] = React.useState<string>('');
   const [organization, setOrganization] = React.useState<string>('');
+
+  const { onLogin } = React.useContext(ReactLoginContext);
 
   const onChangeUser = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setUsername(value);
   const onChangeToken = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setToken(value);
@@ -21,6 +24,7 @@ export const LoginContainer: React.FunctionComponent = () => {
     try {
       localStorageAccountInfo.set({ username, token, organization });
       await login(organization);
+      onLogin();
     } catch (error) {
       localStorageAccountInfo.remove();
       console.log(error);

@@ -15,8 +15,3 @@ export const SelectContainer = styled(FormGroup)({
   flexDirection: 'row',
   marginTop: '10px',
 })
-
-export const Title = styled(Typography)({
-  padding: '10px 0',
-  textAlign: 'center'
-})

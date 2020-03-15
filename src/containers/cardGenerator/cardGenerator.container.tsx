@@ -1,15 +1,15 @@
 import * as React from "react";
-import { AppBar, Button, Container, Toolbar } from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { splitEvery, uniq } from "ramda";
 import { Project, Sprint, Team, WorkItem } from "../../model/view";
-import { Title } from "./cardGenerator.container.styles";
+import { AppBarComponent } from "./components/appBar";
 import { CardPageComponent } from "./components/card/cardPage.component";
 import { FilterComponent } from "./components/filter";
 import { SelectOptionsComponent } from "./components/selectOptions";
 import { mapProjectsApiModelToVM } from "./mappers";
 import { getProjects } from "./services";
-import { uniq, splitEvery } from "ramda";
-import { ReactLoginContext } from "../../common/providers";
+import { localStorageAccountInfo } from "../../common/services";
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [projects, setProjects] = React.useState<Project[]>();
@@ -19,7 +19,6 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [teamName, setTeamName] = React.useState<string>("");
   const [filters, setFilters] = React.useState<string[]>([]);
 
-  const { onLogout } = React.useContext(ReactLoginContext);
   const componentToPrintRef = React.useRef();
   const reactToPrintContent = () => componentToPrintRef.current;
   const reactToPrintTrigger = () => (
@@ -31,8 +30,10 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     </Button>
   );
 
+  const organization = localStorageAccountInfo.get()?.organization;
+
   React.useEffect(() => {
-    getProjects()
+    getProjects(organization)
       .then(projectsResponse =>
         setProjects(mapProjectsApiModelToVM(projectsResponse))
       )
@@ -75,14 +76,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   return (
     <>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <Title variant="h4">AZURE CARD GENERATOR</Title>
-          <Button onClick={onLogout} variant="outlined">
-            Logout
-        </Button>
-        </Toolbar>
-      </AppBar>
+      <AppBarComponent />
       <Container>
         <SelectOptionsComponent
           teams={teams}

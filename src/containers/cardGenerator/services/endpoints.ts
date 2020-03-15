@@ -1,23 +1,21 @@
-import { localStorageAccountInfo } from "../../../common/services";
+const baseEndpoint = (organization: string) => `https://dev.azure.com/${organization}`;
 
-const organization = localStorageAccountInfo.get()?.organization;
-
-const baseEndpoint = `https://dev.azure.com/${organization}`;
-
-export const projectEndpoint = `https://dev.azure.com/${organization}/_apis/projects?api-version=5.1`;
-
-export const teamsEndpoint = (projectName: string) => (
-  `${baseEndpoint}/_apis/projects/${projectName}/teams?api-version=5.1`
+export const projectEndpoint = (organization: string) => (
+  `https://dev.azure.com/${organization}/_apis/projects?api-version=5.1`
 );
 
-export const sprintEndpoint = (projectName: string, teamId: string) => (
-  `${baseEndpoint}/${projectName}/${teamId}/_apis/work/teamsettings/iterations?api-version=5.1`
+export const teamsEndpoint = (organization: string, projectName: string) => (
+  `${baseEndpoint(organization)}/_apis/projects/${projectName}/teams?api-version=5.1`
 );
 
-export const iterationEndpoint = (projectName: string, teamId: string, iterationId: string) => (
-  `${baseEndpoint}/${projectName}/${teamId}/_apis/work/teamsettings/iterations/${iterationId}/workitems`
+export const sprintEndpoint = (organization: string, projectName: string, teamId: string) => (
+  `${baseEndpoint(organization)}/${projectName}/${teamId}/_apis/work/teamsettings/iterations?api-version=5.1`
 );
 
-export const workItemsEndpoint = (projectName: string, workItemIds: number[]) => (
-  `${baseEndpoint}/${projectName}/_apis/wit/workItems?ids=${workItemIds}&api-version=5.1`
+export const iterationEndpoint = (organization: string, projectName: string, teamId: string, iterationId: string) => (
+  `${baseEndpoint(organization)}/${projectName}/${teamId}/_apis/work/teamsettings/iterations/${iterationId}/workitems`
+);
+
+export const workItemsEndpoint = (organization: string, projectName: string, workItemIds: number[]) => (
+  `${baseEndpoint(organization)}/${projectName}/_apis/wit/workItems?ids=${workItemIds}&api-version=5.1`
 );
