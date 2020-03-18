@@ -70,6 +70,9 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
       const states = uniq(workItems.flat().map(({ state }) => state));
       setFilters(states);
       return states;
+    } else {
+      setFilters([]);
+      return [];
     }
   }, [workItems]);
 

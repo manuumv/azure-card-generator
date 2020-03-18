@@ -1,10 +1,20 @@
 import * as React from 'react';
-import { LoginContainerStyled, ContainerStyled, LoginButton, Input, FormControlCheckbox } from './login.container.styles';
-import { CssBaseline, Checkbox } from '@material-ui/core';
-import { login } from './services';
-import { UserService } from '../../common/services';
-import { LoginContext, SnackbarContext } from '../../common/providers';
+import { Checkbox, CssBaseline } from '@material-ui/core';
+import { ErrorList } from 'async-validator';
 import { SpinnerComponent } from '../../common/components/spinner';
+import { LoginContext, SnackbarContext } from '../../common/providers';
+import { UserService } from '../../common/services';
+import { ContainerStyled, FormControlCheckbox, Input, LoginButton, LoginContainerStyled } from './login.container.styles';
+import { login } from './services';
+import { validateUser } from './validations';
+
+export interface UserFormErrors {
+  name: string,
+  token: string,
+  organization: string,
+}
+
+const defaultFormErrors: UserFormErrors = { name: null, organization: null, token: null };
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [username, setUsername] = React.useState<string>('');
@@ -12,6 +22,7 @@ export const LoginContainer: React.FunctionComponent = () => {
   const [organization, setOrganization] = React.useState<string>('');
   const [rememberUser, setRememberUser] = React.useState<boolean>(false);
   const [isLogging, setIsLogging] = React.useState<boolean>(false);
+  const [formErrors, setFormErrors] = React.useState<UserFormErrors>(defaultFormErrors);
 
   const { onLogin } = React.useContext(LoginContext);
   const { useSnackbar } = React.useContext(SnackbarContext)
@@ -21,13 +32,17 @@ export const LoginContainer: React.FunctionComponent = () => {
   const onChangeOrganization = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setOrganization(value);
   const onChangeRememberLogin = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => setRememberUser(checked);
 
-  const onClickLogin = async () => {
-    if (!username || !token || !organization) {
-      return;
-    }
+  const handleFormError = (errors: ErrorList) => {
+    let userFormErrors: UserFormErrors = { name: null, organization: null, token: null };
+    errors.forEach((error) => userFormErrors = { ...userFormErrors, [error.field]: error.message });
+    setFormErrors(userFormErrors);
+  }
 
+  const onClickLogin = async () => {
     try {
       const user = { name: username, token, organization };
+      await validateUser(user);
+      setFormErrors(defaultFormErrors);
       UserService.set(user);
       setIsLogging(true);
       await login(organization);
@@ -36,9 +51,8 @@ export const LoginContainer: React.FunctionComponent = () => {
     } catch (error) {
       UserService.set(null);
       UserService.remove();
-      console.log(error);
-      useSnackbar('Failed on login', 'error');
       setIsLogging(false);
+      (error.errors && error.fields) ? handleFormError(error.errors) : useSnackbar('Failed on login', 'error');
     }
   };
 
@@ -47,9 +61,27 @@ export const LoginContainer: React.FunctionComponent = () => {
       <CssBaseline />
       <ContainerStyled>
         <LoginContainerStyled>
-          <Input label="User" value={username} onChange={onChangeUser} />
-          <Input label="Token" value={token} onChange={onChangeToken} />
-          <Input label="Organization" value={organization} onChange={onChangeOrganization} />
+          <Input
+            error={!!formErrors?.name}
+            helperText={formErrors?.name}
+            label="Username"
+            value={username}
+            onChange={onChangeUser}
+          />
+          <Input
+            error={!!formErrors?.token}
+            helperText={formErrors?.token}
+            label="Token"
+            value={token}
+            onChange={onChangeToken}
+          />
+          <Input
+            error={!!formErrors?.organization}
+            helperText={formErrors?.organization}
+            label="Organization"
+            value={organization}
+            onChange={onChangeOrganization}
+          />
           <FormControlCheckbox
             control={<Checkbox checked={rememberUser} onChange={onChangeRememberLogin} value={rememberUser} color="primary" />}
             label="Remember"
