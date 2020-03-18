@@ -26,7 +26,6 @@ export const Input = styled(TextField)({
 
 export const LoginButton = styled(Button)({
   width: '100%',
-  marginTop: '16px',
 })
 
 export const FormControlCheckbox = styled(FormControlLabel)({

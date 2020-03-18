@@ -4,12 +4,14 @@ import { CssBaseline, Checkbox } from '@material-ui/core';
 import { login } from './services';
 import { UserService } from '../../common/services';
 import { LoginContext } from '../../common/providers';
+import { SpinnerComponent } from '../../common/components/spinner';
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [username, setUsername] = React.useState<string>('');
   const [token, setToken] = React.useState<string>('');
   const [organization, setOrganization] = React.useState<string>('');
   const [rememberUser, setRememberUser] = React.useState<boolean>(false);
+  const [isLogging, setIsLogging] = React.useState<boolean>(false);
 
   const { onLogin } = React.useContext(LoginContext);
 
@@ -26,7 +28,9 @@ export const LoginContainer: React.FunctionComponent = () => {
     try {
       const user = { name: username, token, organization };
       UserService.set(user);
+      setIsLogging(true);
       await login(organization);
+      setIsLogging(false);
 
       if (rememberUser) {
         UserService.save(user);
@@ -37,6 +41,7 @@ export const LoginContainer: React.FunctionComponent = () => {
       UserService.set(null);
       UserService.remove();
       console.log(error);
+      setIsLogging(false);
     }
   };
 
@@ -52,7 +57,9 @@ export const LoginContainer: React.FunctionComponent = () => {
             control={<Checkbox checked={rememberUser} onChange={onChangeRememberLogin} value={rememberUser} color="primary" />}
             label="Remember"
           />
-          <LoginButton variant="contained" onClick={onClickLogin} >Login</LoginButton>
+          <SpinnerComponent displayChildren={true} isLoading={isLogging}>
+            <LoginButton disabled={isLogging} variant="contained" onClick={onClickLogin} >Login</LoginButton>
+          </SpinnerComponent>
         </LoginContainerStyled>
       </ContainerStyled>
     </>

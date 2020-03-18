@@ -12,10 +12,21 @@ export const mapWorkItemApiModelToVM = (workItem: ApiModel.WorkItem): ViewModel.
     {
       id: workItem.id,
       url: workItem.url,
-      type: workItem.fields && workItem.fields["System.WorkItemType"].toUpperCase() as ViewModel.WorkItemType,
+      type: mapWorkItemTypeApiModelToVM(workItem.fields["System.WorkItemType"]),
       title: workItem.fields && workItem.fields["System.Title"],
       state: workItem.fields && workItem.fields["System.State"],
       effort: workItem.fields && workItem.fields["Microsoft.VSTS.Scheduling.Effort"]
     } :
     null
 )
+
+export const mapWorkItemTypeApiModelToVM = (type: ApiModel.WorkItemType): ViewModel.WorkItemType => {
+  switch (type.toUpperCase()) {
+    case 'BUG':
+      return 'BUG';
+    case "PRODUCT BACKLOG ITEM":
+      return 'PRODUCT BACKLOG ITEM';
+    default:
+      return 'NONE';
+  }
+}

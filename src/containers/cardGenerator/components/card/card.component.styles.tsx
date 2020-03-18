@@ -31,7 +31,7 @@ export const getTypeComponent = (workItemType: WorkItemType) => styled(Typograph
   width: '70%',
   textAlign: 'center',
   padding: '0.2vh 0',
-  backgroundColor: workItemType === WorkItemType.BUG ? WorkItemTypeColors.bug : WorkItemTypeColors.pbi,
+  backgroundColor: workItemType === 'BUG' ? WorkItemTypeColors.bug : WorkItemTypeColors.pbi,
 })
 
 export const Description = styled(Typography)({
