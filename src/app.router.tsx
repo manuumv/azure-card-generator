@@ -13,7 +13,7 @@ export const AppRouter: React.FunctionComponent = () => {
         <Route
           exact={true}
           path="/"
-          render={() => !!user ? <CardGeneratorContainer /> : <LoginContainer />}
+          render={() => user ? <CardGeneratorContainer /> : <LoginContainer />}
         />
       </Switch>
     </HashRouter>

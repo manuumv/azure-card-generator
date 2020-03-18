@@ -3,7 +3,7 @@ import { LoginContainerStyled, ContainerStyled, LoginButton, Input, FormControlC
 import { CssBaseline, Checkbox } from '@material-ui/core';
 import { login } from './services';
 import { UserService } from '../../common/services';
-import { LoginContext } from '../../common/providers';
+import { LoginContext, SnackbarContext } from '../../common/providers';
 import { SpinnerComponent } from '../../common/components/spinner';
 
 export const LoginContainer: React.FunctionComponent = () => {
@@ -14,6 +14,7 @@ export const LoginContainer: React.FunctionComponent = () => {
   const [isLogging, setIsLogging] = React.useState<boolean>(false);
 
   const { onLogin } = React.useContext(LoginContext);
+  const { useSnackbar } = React.useContext(SnackbarContext)
 
   const onChangeUser = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setUsername(value);
   const onChangeToken = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setToken(value);
@@ -31,16 +32,12 @@ export const LoginContainer: React.FunctionComponent = () => {
       setIsLogging(true);
       await login(organization);
       setIsLogging(false);
-
-      if (rememberUser) {
-        UserService.save(user);
-      }
-
-      onLogin(user);
+      onLogin(user, rememberUser);
     } catch (error) {
       UserService.set(null);
       UserService.remove();
       console.log(error);
+      useSnackbar('Failed on login', 'error');
       setIsLogging(false);
     }
   };
