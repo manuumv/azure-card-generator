@@ -3,12 +3,14 @@ import { hot } from 'react-hot-loader/root';
 import { setConfig } from 'react-hot-loader';
 import { LoginProvider, SnackbarProvider } from './common/providers';
 import { AppRouter } from './app.router';
+import { CssBaseline } from '@material-ui/core';
 
 setConfig({ reloadHooks: false });
 
 export const App: React.FunctionComponent = hot(() =>
   <LoginProvider>
     <SnackbarProvider>
+      <CssBaseline />
       <AppRouter />
     </SnackbarProvider>
   </LoginProvider>

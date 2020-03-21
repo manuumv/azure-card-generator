@@ -31,10 +31,10 @@ export const LoginProvider: React.FunctionComponent = ({ children }) => {
     setUser(null);
   }, []);
 
-  const onLogin = React.useCallback((user: User, rememberUser: boolean) => {
+  const onLogin = React.useCallback((user: User) => {
     setUser(user);
 
-    if(rememberUser) {
+    if (user.remember) {
       UserService.save(user);
     }
   }, []);

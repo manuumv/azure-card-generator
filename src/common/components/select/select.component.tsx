@@ -18,7 +18,7 @@ export const SelectComponent: React.FunctionComponent<Props> = ({ selectedValue,
     onChangeOption(event.target.value);
   }
 
-  const isDisabled = (!values || values && values.length === 0) ? true : disabled;
+  const isDisabled = !values || values && values.length === 0 ? true : disabled;
 
   return (
     <FormControlContainer disabled={isDisabled}>

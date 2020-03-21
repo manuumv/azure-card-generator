@@ -1,2 +1,2 @@
-export { User } from './user';
+export { User, UserProperties } from './user';
 export { SelectValue } from './selectValue';

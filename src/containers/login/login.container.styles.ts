@@ -6,7 +6,7 @@ export const ContainerStyled = styled('div')({
   display: 'flex'
 })
 
-export const LoginContainerStyled = styled('div')({
+export const LoginForm = styled('form')({
   margin: 'auto',
   display: 'flex',
   flexDirection: 'column',

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Snackbar } from '@material-ui/core';
 import { Alert, Color } from '@material-ui/lab';
+import { snackBackAnchorOrigin, autoHideDuration, elevation } from "./constants";
 
 interface SnackbarContext {
   useSnackbar: (message: string, severity: Color) => void;
@@ -28,13 +29,13 @@ export const SnackbarProvider: React.FunctionComponent = ({ children }) => {
   return (
     <SnackbarContext.Provider value={{ useSnackbar }}>
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={snackBackAnchorOrigin}
         key="top,right"
         open={isOpen}
-        autoHideDuration={4000}
+        autoHideDuration={autoHideDuration}
         onClose={handleClose}
       >
-        <Alert variant="filled" elevation={6} onClose={handleClose} severity={severity} >
+        <Alert variant="filled" elevation={elevation} onClose={handleClose} severity={severity} >
           {message}
         </Alert>
       </Snackbar>
