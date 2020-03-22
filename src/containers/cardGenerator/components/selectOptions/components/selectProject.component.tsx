@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { SelectComponent } from '../../../../../common/components/select';
-import { SpinnerComponent } from '../../../../../common/components/spinner';
-import { mapToSelectOptions } from '../../../../../common/mappers';
-import { getTeams, getProjects } from '../../../../../api/rest';
-import { UserSessionService } from '../../../../../common/services';
-import { isNumber } from '../../../../../common/utils';
+import { SelectComponent, SpinnerComponent } from 'common/components';
+import { mapToSelectOptions } from 'common/mappers';
+import { getTeams, getProjects } from 'api/rest';
+import { UserSessionService } from 'common/services';
+import { isNumber } from 'common/utils';
 import { mapTeamsApiModelToVM, mapProjectsApiModelToVM } from '../../../mappers';
 import { Project, Team } from '../../../viewmodel';
-import { SnackbarContext } from '../../../../../common/providers';
+import { SnackbarContext } from 'common/providers';
 
 interface Props {
   projects: Project[];

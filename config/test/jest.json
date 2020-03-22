@@ -8,5 +8,10 @@
   "snapshotSerializers": [
     "enzyme-to-json/serializer"
   ],
-  "automock": false
+  "automock": false,
+  "moduleNameMapper": {
+    "^styles(.*)$": "<rootDir>/src/styles$1",
+    "^common(.*)$": "<rootDir>/src/common$1",
+    "^api(.*)$": "<rootDir>/src/api$1"
+  }
 }

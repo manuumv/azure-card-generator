@@ -12,8 +12,19 @@
     "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "baseUrl": ".",
+    "baseUrl": "./src/",
     "outDir": "dist",
+    "paths": {
+      "api": [
+        "./api"
+      ],
+      "common": [
+        "./common"
+      ],
+      "styles": [
+        "./styles"
+      ],
+    }
   },
   "compileOnSave": true,
   "exclude": [

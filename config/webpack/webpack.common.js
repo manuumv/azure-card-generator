@@ -6,7 +6,12 @@ const Dotenv = require('dotenv-webpack');
 module.exports = {
   context: path.join(basePath, 'src'),
   resolve: {
-    extensions: ['.js', '.ts', '.tsx']
+    extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      common: path.join(basePath, 'src/common/'),
+      api: path.join(basePath, 'src/api/'),
+      styles: path.join(basePath, 'src/styles/'),
+    }
   },
   entry: ['./index.tsx'],
   output: {

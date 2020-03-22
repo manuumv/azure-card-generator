@@ -1,11 +1,8 @@
 import * as React from "react";
 import { Container, Button } from "@material-ui/core";
-import { SpinnerComponent } from "../../common/components/spinner";
+import { SpinnerComponent } from "common/components/spinner";
 import { filterStates, getFilteredWorkItems } from "./cardGenerator.container.business";
-import { CardPageComponent } from "./components/card/cardPage.component";
-import { FilterComponent } from "./components/filter";
-import { SelectOptionsComponent } from "./components/selectOptions";
-import { TopBarComponent } from "./components/topBar";
+import { FilterComponent, SelectOptionsComponent, TopBarComponent, CardPageComponent } from "./components";
 import { Loading, Project, Sprint, Team, WorkItem } from "./viewmodel";
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {

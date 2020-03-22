@@ -1,11 +1,9 @@
 import * as React from 'react';
 import ReactToPrint from 'react-to-print';
 import { Loading, LoadingKeys, Project, Sprint, Team, WorkItem } from '../../viewmodel';
-import { SelectContainer } from './selectOptions.component.styles';
-import { SelectProjectComponent } from './components/selectProject.component';
-import { SelectTeamComponent } from './components/selectTeam.component';
-import { SelectSprintComponent } from './components/selectSprint.component';
-import { isNumber } from '../../../../common/utils';
+import { SelectContainer, } from './selectOptions.component.styles';
+import { SelectProjectComponent, SelectTeamComponent, SelectSprintComponent } from './components';
+import { isNumber } from 'common/utils';
 
 interface Props {
   teams: Team[];

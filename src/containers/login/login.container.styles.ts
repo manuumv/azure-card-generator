@@ -1,5 +1,5 @@
 import { styled, Button, TextField, FormControlLabel } from "@material-ui/core";
-import { loginColors } from "../../styles";
+import { loginColors } from "styles";
 
 export const ContainerStyled = styled('div')({
   height: '100vh',

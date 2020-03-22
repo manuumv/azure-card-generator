@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { SpinnerComponent } from '../../common/components/spinner';
-import { LoginContext, SnackbarContext } from '../../common/providers';
+import { SpinnerComponent } from 'common/components/spinner';
+import { LoginContext, SnackbarContext } from 'common/providers';
 import { UserFormComponent } from './components';
 import { ContainerStyled, LoginButton, LoginForm } from './login.container.styles';
 import { UserForm, UserFormKeys, UserFormErrors } from './viewmodel';
-import { UserSessionService } from '../../common/services';
+import { UserSessionService } from 'common/services';
 import { validateUser } from './validations';
 import { formatFormErrors } from './login.container.business';
-import { getProjects } from '../../api/rest';
+import { getProjects } from 'api/rest';
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [user, setUser] = React.useState<UserForm>({ name: '', organization: '', token: '', remember: false });

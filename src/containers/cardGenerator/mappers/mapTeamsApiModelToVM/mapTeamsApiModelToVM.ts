@@ -1,4 +1,4 @@
-import * as ApiModel from "../../../../api/model";
+import * as ApiModel from "api/model";
 import * as ViewModel from "../../viewmodel";
 
 export const mapTeamsApiModelToVM = (teams: ApiModel.TeamCollection): ViewModel.Team[] => (

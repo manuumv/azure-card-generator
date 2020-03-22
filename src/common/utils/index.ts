@@ -1,2 +1,2 @@
-export { get, put, remove, post } from './httpHelper';
+export { get } from './httpHelper';
 export { isNumber } from './isNumber';

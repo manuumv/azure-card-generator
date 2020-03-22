@@ -1,4 +1,4 @@
-import * as ApiModel from "../../../../api/model";
+import * as ApiModel from "api/model";
 import * as ViewModel from "../../viewmodel";
 
 export const mapSprintsApiModelToVM = (sprints: ApiModel.SprintCollection): ViewModel.Sprint[] => (
