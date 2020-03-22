@@ -1,16 +1,12 @@
 import * as React from "react";
-import { Button, Container } from "@material-ui/core";
-import { Project, Sprint, Team, WorkItem } from "./viewmodel";
-import { TopBarComponent } from "./components/topBar";
+import { Container, Button } from "@material-ui/core";
+import { SpinnerComponent } from "../../common/components/spinner";
+import { filterStates, getFilteredWorkItems } from "./cardGenerator.container.business";
 import { CardPageComponent } from "./components/card/cardPage.component";
 import { FilterComponent } from "./components/filter";
 import { SelectOptionsComponent } from "./components/selectOptions";
-import { mapProjectsApiModelToVM } from "./mappers";
-import { getProjects } from "../../common/services/api";
-import { UserSessionService } from "../../common/services/storage";
-import { SpinnerComponent } from "../../common/components/spinner";
-import { filterStates, getFilteredWorkItems } from "./cardGenerator.container.business";
-import { SnackbarContext } from "../../common/providers";
+import { TopBarComponent } from "./components/topBar";
+import { Loading, Project, Sprint, Team, WorkItem } from "./viewmodel";
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [projects, setProjects] = React.useState<Project[]>();
@@ -19,47 +15,22 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [workItems, setWorkItems] = React.useState<WorkItem[]>();
   const [teamName, setTeamName] = React.useState<string>("");
   const [filters, setFilters] = React.useState<string[]>([]);
-  const [isLoading, setIsLoading] = React.useState({
+  const [isLoading, setIsLoading] = React.useState<Loading>({
     projects: false,
     teams: false,
     sprints: false,
     workItems: false,
   });
 
-  const { useSnackbar } = React.useContext(SnackbarContext)
-
   const componentToPrintRef = React.useRef();
-  const reactToPrintContent = () => componentToPrintRef.current;
-  const reactToPrintTrigger = () => (
-    <Button
-      disabled={!(Array.isArray(workItems) && workItems.length > 0)}
-      variant="outlined"
-    >
-      Print
-    </Button>
-  );
 
-  const organization = UserSessionService.get()?.organization;
-
-  React.useEffect(() => {
-    setIsLoading({ ...isLoading, projects: true });
-    getProjects(organization)
-      .then(projectsResponse => {
-        setProjects(mapProjectsApiModelToVM(projectsResponse));
-        setIsLoading({ ...isLoading, projects: false });
-      })
-      .catch((error) => {
-        useSnackbar(error.message, 'error');
-        setIsLoading({ ...isLoading, projects: false });
-      });
-  }, []);
-
-  const handleChangeTeam = React.useCallback(setTeams, [projects, teams]);
-  const handleChangeSprint = React.useCallback((sprints: Sprint[], teamName: string) => {
+  const onChangeProject = React.useCallback(setProjects, [projects]);
+  const onChangeTeam = React.useCallback(setTeams, [projects, teams]);
+  const onChangeSprint = React.useCallback((sprints: Sprint[], teamName: string) => {
     setTeamName(teamName);
     setSprints(sprints);
   }, [projects, teams, sprints, teamName]);
-  const handleChangeWorkItems = React.useCallback(setWorkItems, [workItems]);
+  const onChangeWorkItems = React.useCallback(setWorkItems, [workItems]);
   const handleChangeFilters = React.useCallback(({ target: { value } }: React.ChangeEvent<{ value: string[] }>) => {
     setFilters(value);
   }, [filters]);
@@ -75,6 +46,13 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
 
   const filteredWorkItems = React.useMemo(() => getFilteredWorkItems(workItems, filters), [filters, states, workItems]);
 
+  const reactToPrintContent = () => componentToPrintRef.current;
+  const reactToPrintTrigger = () => (
+    <Button disabled={!(Array.isArray(workItems) && workItems.length > 0)} variant="outlined">
+      Print
+    </Button>
+  );
+
   return (
     <>
       <TopBarComponent />
@@ -84,9 +62,10 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
           sprints={sprints}
           projects={projects}
           isLoading={isLoading}
-          handleChangeTeam={handleChangeTeam}
-          handleChangeSprint={handleChangeSprint}
-          handleChangeWorkItems={handleChangeWorkItems}
+          onChangeProject={onChangeProject}
+          onChangeTeam={onChangeTeam}
+          onChangeSprint={onChangeSprint}
+          onChangeWorkItems={onChangeWorkItems}
           reactToPrintTrigger={reactToPrintTrigger}
           reactToPrintContent={reactToPrintContent}
           changeIsLoading={changeIsLoading}

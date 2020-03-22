@@ -7,7 +7,7 @@ import { Checkbox } from '@material-ui/core';
 interface Props {
   user: UserForm;
   formErrors: UserFormErrors;
-  onChangeUser: (key: string, value: string | boolean) => void;
+  onChangeUser: (key: UserFormKeys, value: string | boolean) => void;
 }
 
 export const UserFormComponent: React.FunctionComponent<Props> = ({ user, formErrors, onChangeUser }) => {

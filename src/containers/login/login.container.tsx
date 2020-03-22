@@ -15,8 +15,6 @@ export const LoginContainer: React.FunctionComponent = () => {
   const { onLogin } = React.useContext(LoginContext);
   const { useSnackbar } = React.useContext(SnackbarContext)
 
-  const handleFormError = React.useCallback((errors: ErrorList) => setFormErrors(formatFormErrors(errors)), [formErrors]);
-  const handleIsLogging = React.useCallback((value: boolean) => setIsLogging(value), [isLogging]);
   const onChangeUser = React.useCallback((key: UserFormKeys, value: string | boolean) => (
     setUser({ ...user, [key]: value })
   ), [user]);
@@ -24,9 +22,9 @@ export const LoginContainer: React.FunctionComponent = () => {
   const onClickLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      await onSuccessLogin(user, handleFormError, handleIsLogging, onLogin);
+      await onSuccessLogin(user, setFormErrors, setIsLogging, onLogin);
     } catch (error) {
-      onErrorLogin(error, handleIsLogging, handleFormError, useSnackbar)
+      onErrorLogin(error, setIsLogging, setFormErrors, useSnackbar)
     }
   };
 

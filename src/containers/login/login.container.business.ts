@@ -25,27 +25,27 @@ export const formatFormErrors = (errors: ErrorList) => {
 
 export const onSuccessLogin = async (
   user: UserForm,
-  handleFormError: (errors: ErrorList) => void,
-  handleIsLogging: (value: boolean) => void,
+  setFormErrors: (userFormErrors: UserFormErrors) => void,
+  setIsLogging: (value: boolean) => void,
   onLogin: (user: User, rememberUser: boolean) => void,
 ) => {
   await validateUser(user);
-  handleFormError(null);
+  setFormErrors(formatFormErrors(null));
   UserSessionService.set(user);
-  handleIsLogging(true);
+  setIsLogging(true);
   await getProjects(user.organization);
-  handleIsLogging(false);
+  setIsLogging(false);
   onLogin(user, user.remember);
 }
 
 export const onErrorLogin = (
   error: { errors: ErrorList, fields: FieldErrorList },
   setIsLogging: (isLoggin: boolean) => void,
-  handleFormError: (errors: ErrorList) => void,
+  setFormErrors: (userFormErrors: UserFormErrors) => void,
   useSnackbar: (message: string, severity: Color) => void
 ) => {
   UserSessionService.set(null);
   UserSessionService.remove();
   setIsLogging(false);
-  (error.errors && error.fields) ? handleFormError(error.errors) : useSnackbar('Failed on login', 'error');
+  (error.errors && error.fields) ? setFormErrors(formatFormErrors(error.errors)) : useSnackbar('Failed on login', 'error');
 }

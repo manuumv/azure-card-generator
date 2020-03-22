@@ -1,135 +1,77 @@
 import * as React from 'react';
-import { SelectComponent } from '../../../../common/components/select';
-import ReactToPrint, { ITriggerProps } from 'react-to-print';
+import ReactToPrint from 'react-to-print';
+import { Loading, LoadingKeys, Project, Sprint, Team, WorkItem } from '../../viewmodel';
 import { SelectContainer } from './selectOptions.component.styles';
-import { Team, Sprint, Project, WorkItem } from '../../viewmodel';
+import { SelectProjectComponent } from './components/selectProject.component';
+import { SelectTeamComponent } from './components/selectTeam.component';
+import { SelectSprintComponent } from './components/selectSprint.component';
 import { isNumber } from '../../../../common/utils';
-import { getTeams, getSprints, getWorkItemRelations, getWorkItems } from '../../../../common/services/api';
-import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemRelationsApiModelToVM, mapWorkItemsApiModelToVM } from '../../mappers';
-import { UserSessionService } from '../../../../common/services/storage';
-import { mapToSelectOptions } from '../../../../common/mappers';
-import { SpinnerComponent } from '../../../../common/components/spinner';
 
 interface Props {
   teams: Team[];
-  sprints: Sprint[];
   projects: Project[];
-  isLoading: {
-    projects: boolean,
-    teams: boolean,
-    sprints: boolean,
-    workItems: boolean,
-  },
-  handleChangeTeam: (team: Team[]) => void;
-  handleChangeSprint: (sprints: Sprint[], teamName: string) => void;
-  handleChangeWorkItems: (workItems: WorkItem[]) => void;
-  reactToPrintTrigger: <T>() => React.ReactElement<ITriggerProps<T>>;
+  sprints: Sprint[];
+  isLoading: Loading;
+  onChangeProject: (projects: Project[]) => void;
+  onChangeTeam: (team: Team[]) => void;
+  onChangeSprint: (sprints: Sprint[], teamName: string) => void;
+  onChangeWorkItems: (workItems: WorkItem[]) => void;
+  reactToPrintTrigger: () => React.ReactElement;
   reactToPrintContent: () => React.ReactInstance;
-  changeIsLoading: (textfield: 'projects' | 'teams' | 'sprints' | 'workItems', value: boolean) => void;
+  changeIsLoading: (key: LoadingKeys, value: boolean) => void;
 }
 
 export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) => {
   const [selectedProject, setSelectedProject] = React.useState<string | number>('');
   const [selectedTeam, setSelectedTeam] = React.useState<string | number>('');
   const [selectedSprint, setSelectedSprint] = React.useState<string | number>('');
-  const organization = UserSessionService.get()?.organization;
 
   React.useEffect(() => {
     setSelectedTeam('');
     setSelectedSprint('');
-    props.handleChangeSprint(null, '');
-    props.handleChangeWorkItems(null);
+    props.onChangeSprint(null, '');
+    props.onChangeWorkItems(null);
   }, [selectedProject]);
 
   React.useEffect(() => {
     setSelectedSprint('');
-    props.handleChangeWorkItems(null)
+    props.onChangeWorkItems(null)
   }, [selectedTeam]);
 
-
-  const onSelectProject = (value: string | number) => {
-    setSelectedProject(value);
-    if (isNumber(value)) {
-      props.changeIsLoading('teams', true);
-      getTeams(organization, props.projects[value].name)
-        .then((teamsResponse) => {
-          props.handleChangeTeam(mapTeamsApiModelToVM(teamsResponse))
-          props.changeIsLoading('teams', false);
-        })
-        .catch((error) => {
-          console.log(error);
-          props.changeIsLoading('teams', false);
-        });
-    }
-  }
-
-  const onSelectTeam = (value: string | number) => {
-    setSelectedTeam(value);
-    if (isNumber(value)) {
-      props.changeIsLoading('sprints', true);
-      getSprints(organization, props.projects[selectedProject].name, props.teams[value].id)
-        .then((sprintsResponse) => {
-          props.handleChangeSprint(mapSprintsApiModelToVM(sprintsResponse), props.teams[value].name)
-          props.changeIsLoading('sprints', false);
-        })
-        .catch((error) => {
-          console.log(error);
-          props.changeIsLoading('sprints', false);
-        });
-    }
-  }
-
-  const onSelectSprint = (value: string | number) => {
-    setSelectedSprint(value);
-    if (isNumber(value)) {
-      props.changeIsLoading('workItems', true);
-      getWorkItemRelations(organization, props.projects[selectedProject].name, props.teams[selectedTeam].id, props.sprints[value].id)
-        .then((workItemRelations) => {
-          const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
-          getWorkItems(organization, props.projects[selectedProject].name, workItemIds).then((workItems) => {
-            props.handleChangeWorkItems(mapWorkItemsApiModelToVM(workItems));
-          });
-          props.changeIsLoading('workItems', false);
-        })
-        .catch((error) => {
-          console.log(error);
-          props.changeIsLoading('workItems', false);
-        });
-    }
-  }
+  const onChangeIsLoading = React.useCallback((key: LoadingKeys) => (value: boolean) => props.changeIsLoading(key, value), [props.isLoading]);
+  const projectName = isNumber(selectedProject) ? props.projects[selectedProject].name : '';
+  const teamId = isNumber(selectedTeam) ? props.teams[selectedTeam].id : '';
 
   return (
     <SelectContainer>
-      <SpinnerComponent displayChildren={true} isLoading={props.isLoading.projects}>
-        <SelectComponent
-          id="projects"
-          label="Projects:"
-          values={mapToSelectOptions<Project>(props.projects, 'name')}
-          selectedValue={selectedProject}
-          onChangeOption={onSelectProject}
-          disabled={props.isLoading.projects}
-        />
-      </SpinnerComponent>
-      <SpinnerComponent displayChildren={true} isLoading={props.isLoading.teams}>
-        <SelectComponent
-          id="teams"
-          label="Teams:"
-          values={mapToSelectOptions<Team>(props.teams, 'name')}
-          selectedValue={selectedTeam}
-          onChangeOption={onSelectTeam}
-          disabled={props.isLoading.teams}
-        />
-      </SpinnerComponent>
-      <SpinnerComponent displayChildren={true} isLoading={props.isLoading.sprints}>
-        <SelectComponent
-          id="sprints"
-          label="Sprints:"
-          values={mapToSelectOptions<Sprint>(props.sprints, 'name')}
-          selectedValue={selectedSprint}
-          onChangeOption={onSelectSprint}
-          disabled={props.isLoading.sprints}
-        />
-      </SpinnerComponent>
+      <SelectProjectComponent
+        setSelectedProject={setSelectedProject}
+        selectedProject={selectedProject}
+        projects={props.projects}
+        onChangeProject={props.onChangeProject}
+        onChangeTeam={props.onChangeTeam}
+        isLoading={props.isLoading.projects}
+        changeIsLoading={onChangeIsLoading('projects')}
+      />
+      <SelectTeamComponent
+        teams={props.teams}
+        onChangeSprint={props.onChangeSprint}
+        selectedTeam={selectedTeam}
+        setSelectedTeam={setSelectedTeam}
+        projectName={projectName}
+        isLoading={props.isLoading.teams}
+        changeIsLoading={onChangeIsLoading('teams')}
+      />
+      <SelectSprintComponent
+        onChangeWorkItems={props.onChangeWorkItems}
+        selectedSprint={selectedSprint}
+        setSelectedSprint={setSelectedSprint}
+        sprints={props.sprints}
+        projectName={projectName}
+        teamId={teamId}
+        isLoading={props.isLoading.teams}
+        changeIsLoading={onChangeIsLoading('sprints')}
+      />
       <ReactToPrint
         trigger={props.reactToPrintTrigger}
         content={props.reactToPrintContent}
