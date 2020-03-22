@@ -1,3 +1,3 @@
-export const isNumber = (num) => {
-  return !isNaN(parseFloat(num)) && isFinite(num);
-}
+export const isNumber = (value: any) => (
+  !isNaN(parseFloat(value)) && isFinite(value)
+);

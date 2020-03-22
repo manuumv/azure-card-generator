@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { ErrorList } from 'async-validator';
 import { SpinnerComponent } from '../../common/components/spinner';
 import { LoginContext, SnackbarContext } from '../../common/providers';
-import { UserForm, UserFormKeys } from './viewmodel';
 import { UserFormComponent } from './components';
-import { formatFormErrors, onErrorLogin, onSuccessLogin, UserFormErrors } from './login.container.business';
+import { onErrorLogin, onSuccessLogin, UserFormErrors } from './login.container.business';
 import { ContainerStyled, LoginButton, LoginForm } from './login.container.styles';
+import { UserForm, UserFormKeys } from './viewmodel';
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [user, setUser] = React.useState<UserForm>({ name: '', organization: '', token: '', remember: false });

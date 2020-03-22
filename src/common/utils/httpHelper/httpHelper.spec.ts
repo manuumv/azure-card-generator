@@ -1,6 +1,8 @@
 import * as httpHelper from './httpHelper';
 import { headers } from './constants';
 import { MockParams } from 'jest-fetch-mock/types';
+import { UserSessionService } from '../../services/storage';
+import { User } from '../../../model/entities';
 
 describe('httpHelper', () => {
   describe('request', () => {
@@ -34,9 +36,10 @@ describe('httpHelper', () => {
       // Arrange
       const url = '/test';
       const requestInit: RequestInit = { headers };
-      const requestStub = jest.spyOn(httpHelper, 'request');
-      const token = process.env.TOKEN;
-      const setAuthorizationHeaderStub = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization');
+      const spyRequest = jest.spyOn(httpHelper, 'request');
+      const spyGetRequestInitWithAuthorization = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization').mockReturnValue(requestInit);
+      const mockedUser: User = { name: 'name', organization: 'organization', token: 'token' };
+      const spyUserSessionServiceGet = jest.spyOn(UserSessionService, 'get').mockReturnValue(mockedUser);
       const expectedResult = new Error('error');
       fetchMock.mockReject(expectedResult);
 
@@ -44,8 +47,9 @@ describe('httpHelper', () => {
       httpHelper.request(url, requestInit)
         .catch((response) => {
           // Assert
-          expect(requestStub).toBeCalledWith(url, requestInit);
-          expect(setAuthorizationHeaderStub).toBeCalledWith(requestInit, token);
+          expect(spyRequest).toBeCalledWith(url, requestInit);
+          expect(spyUserSessionServiceGet).toHaveBeenCalled();
+          expect(spyGetRequestInitWithAuthorization).toBeCalledWith(requestInit, mockedUser);
           expect(fetchMock.mock.calls[0][1]['headers']).toEqual(requestInit.headers);
           expect(response).toEqual(expectedResult);
         });
@@ -58,8 +62,11 @@ describe('httpHelper', () => {
       const okResponse = JSON.stringify({ ok: true });
       const url = '/test'
       const getStub = jest.spyOn(httpHelper, 'get');
-      const requestStub = jest.spyOn(httpHelper, 'request');
       const requestInit: RequestInit = { headers, method: 'GET' };
+      const spyGetRequestInitWithAuthorization = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization').mockReturnValue(requestInit);
+      const spyRequest = jest.spyOn(httpHelper, 'request');
+      const mockedUser: User = { name: 'name', organization: 'organization', token: 'token' };
+      const spyUserSessionServiceGet = jest.spyOn(UserSessionService, 'get').mockReturnValue(mockedUser);
       fetchMock.mockResponse(okResponse);
 
       // Act
@@ -67,72 +74,10 @@ describe('httpHelper', () => {
         .then((response) => {
           // Assert
           expect(getStub).toBeCalledWith(url);
-          expect(requestStub).toBeCalledWith(url, requestInit);
+          expect(spyUserSessionServiceGet).toHaveBeenCalled();
+          expect(spyGetRequestInitWithAuthorization).toBeCalledWith(requestInit, mockedUser);
+          expect(spyRequest).toBeCalledWith(url, requestInit);
           expect(response).toEqual(JSON.parse(okResponse));
-        });
-    });
-  });
-
-  describe('remove', () => {
-    it('should called with the given endpoint and invoque request with the endpoint and the method as DELETE', () => {
-      // Arrange
-      const okResponse = JSON.stringify({ ok: true });
-      const url = '/test'
-      const removeStub = jest.spyOn(httpHelper, 'remove');
-      const requestStub = jest.spyOn(httpHelper, 'request');
-      const requestInit: RequestInit = { headers, method: 'DELETE' };
-      fetchMock.mockResponse(okResponse);
-
-      // Act
-      httpHelper.remove(url)
-        .then((response) => {
-          // Assert
-          expect(removeStub).toBeCalledWith(url);
-          expect(requestStub).toBeCalledWith(url, requestInit);
-          expect(response).toEqual(JSON.parse(okResponse));
-        });
-    });
-  });
-
-  describe('post', () => {
-    it('should called with the given endpoint and invoque request with the endpoint and the method as POST', () => {
-      // Arrange
-      const okResponse = { ok: true };
-      const url = '/test'
-      const postStub = jest.spyOn(httpHelper, 'post');
-      const requestStub = jest.spyOn(httpHelper, 'request');
-      const requestInit: RequestInit = { headers, method: 'POST', body: JSON.stringify(okResponse) };
-      const hasResponseContent = false;
-      fetchMock.mockResponse(JSON.stringify(okResponse));
-
-      // Act
-      httpHelper.post(url, okResponse, hasResponseContent)
-        .then((response) => {
-          // Assert
-          expect(postStub).toBeCalledWith(url, okResponse, hasResponseContent);
-          expect(requestStub).toBeCalledWith(url, requestInit, hasResponseContent);
-          expect(response).toEqual(okResponse);
-        });
-    });
-  });
-
-  describe('put', () => {
-    it('should called with the given endpoint and invoque request with the endpoint and the method as PUT', () => {
-      // Arrange
-      const okResponse = { ok: true };
-      const url = '/test';
-      const removeStub = jest.spyOn(httpHelper, 'put');
-      const requestStub = jest.spyOn(httpHelper, 'request');
-      const requestInit: RequestInit = { headers, method: 'PUT', body: JSON.stringify(okResponse) };
-      fetchMock.mockResponse(JSON.stringify(okResponse));
-
-      // Act
-      httpHelper.put(url, okResponse)
-        .then((response) => {
-          // Assert
-          expect(removeStub).toBeCalledWith(url, okResponse);
-          expect(requestStub).toBeCalledWith(url, requestInit);
-          expect(response).toEqual(okResponse);
         });
     });
   });

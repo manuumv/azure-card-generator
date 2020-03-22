@@ -1,18 +1,23 @@
 import * as httpHelper from '../../utils/httpHelper';
 import { getSprints, getTeams, getWorkItemRelations, getWorkItems } from './azure';
-import * endpoints from './endpoints';
+import * as endpoints from './endpoints';
 
 describe('cardGenerator services', () => {
   describe('getTeams', () => {
     it('should be called with the expected arguments', async () => {
       // Arrange
+      const organization = 'testOrganization';
+      const projectName = 'testProject';
       const spyGet = jest.spyOn(httpHelper, 'get').mockImplementation(jest.fn());
+      const mockedEndpoint = 'testEndpoint';
+      const spyTeamsEndpoint = jest.spyOn(endpoints, 'teamsEndpoint').mockReturnValue(mockedEndpoint);
 
       // Act
-      await getTeams();
+      await getTeams(organization, projectName);
 
       // Assert
-      expect(spyGet).toHaveBeenCalledWith(endpoints.teamsEndpoint);
+      expect(spyGet).toHaveBeenCalledWith(mockedEndpoint);
+      expect(spyTeamsEndpoint).toHaveBeenCalledWith(organization, projectName);
     })
   });
 
@@ -23,13 +28,14 @@ describe('cardGenerator services', () => {
       const projectName = 'testProject';
       const teamId = '1';
       const spyGet = jest.spyOn(httpHelper, 'get').mockImplementation(jest.fn());
-      const spySprintEndpoint = jest.spyOn(endpoints, 'sprintEndpoint');
+      const mockedEndpoint = 'testEndpoint';
+      const spySprintEndpoint = jest.spyOn(endpoints, 'sprintEndpoint').mockReturnValue(mockedEndpoint);
 
       // Act
       await getSprints(organization, projectName, teamId);
 
       // Assert
-      expect(spyGet).toHaveBeenCalledWith(endpoints.sprintEndpoint(teamId));
+      expect(spyGet).toHaveBeenCalledWith(mockedEndpoint);
       expect(spySprintEndpoint).toHaveBeenCalledWith(organization, projectName, teamId);
     })
   });
@@ -37,29 +43,39 @@ describe('cardGenerator services', () => {
   describe('getWorkItemRelations', () => {
     it('should be called with the expected arguments', async () => {
       // Arrange
+      const organization = 'testOrganization';
+      const projectName = 'testProject';
       const teamId = 'teamid';
       const iterationId = 'iterationId';
       const spyGet = jest.spyOn(httpHelper, 'get').mockImplementation(jest.fn());
+      const mockedEndpoint = 'testEndpoint';
+      const spyIterationEndpoint = jest.spyOn(endpoints, 'iterationEndpoint').mockReturnValue(mockedEndpoint);
 
       // Act
-      await getWorkItemRelations(teamId, iterationId);
+      await getWorkItemRelations(organization, projectName, teamId, iterationId);
 
       // Assert
-      expect(spyGet).toHaveBeenCalledWith(iterationEndpoint(teamId, iterationId));
+      expect(spyGet).toHaveBeenCalledWith(mockedEndpoint);
+      expect(spyIterationEndpoint).toHaveBeenCalledWith(organization, projectName, teamId, iterationId);
     })
   });
 
   describe('getWorkItems', () => {
     it('should be called with the expected arguments', async () => {
       // Arrange
+      const organization = 'testOrganization';
+      const projectName = 'testProject';
       const workItemsIds = [1, 2]
       const spyGet = jest.spyOn(httpHelper, 'get').mockImplementation(jest.fn());
+      const mockedEndpoint = 'testEndpoint';
+      const spyWorkItemsEndpoint = jest.spyOn(endpoints, 'workItemsEndpoint').mockReturnValue(mockedEndpoint);
 
       // Act
-      await getWorkItems(workItemsIds);
+      await getWorkItems(organization, projectName, workItemsIds);
 
       // Assert
-      expect(spyGet).toHaveBeenCalledWith(workItemsEndpoint(workItemsIds));
+      expect(spyGet).toHaveBeenCalledWith(mockedEndpoint);
+      expect(spyWorkItemsEndpoint).toHaveBeenCalledWith(organization, projectName, workItemsIds);
     })
   });
 });

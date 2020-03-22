@@ -20,7 +20,7 @@ export const mapWorkItemApiModelToVM = (workItem: ApiModel.WorkItem): ViewModel.
     null
 )
 
-export const mapWorkItemTypeApiModelToVM = (type: ApiModel.WorkItemType): ViewModel.WorkItemType => {
+export const mapWorkItemTypeApiModelToVM = (type: string): ViewModel.WorkItemType => {
   switch (type.toUpperCase()) {
     case 'BUG':
       return 'BUG';
