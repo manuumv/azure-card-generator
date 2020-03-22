@@ -1,6 +1,6 @@
 import * as httpHelper from '../../utils/httpHelper';
 import { getSprints, getTeams, getWorkItemRelations, getWorkItems } from './azure';
-import { teamsEndpoint, sprintEndpoint, iterationEndpoint, workItemsEndpoint } from './endpoints';
+import * endpoints from './endpoints';
 
 describe('cardGenerator services', () => {
   describe('getTeams', () => {
@@ -12,21 +12,25 @@ describe('cardGenerator services', () => {
       await getTeams();
 
       // Assert
-      expect(spyGet).toHaveBeenCalledWith(teamsEndpoint);
+      expect(spyGet).toHaveBeenCalledWith(endpoints.teamsEndpoint);
     })
   });
 
   describe('getSprints', () => {
     it('should be called with the expected arguments', async () => {
       // Arrange
-      const sprintId = '1';
+      const organization = 'testOrganization';
+      const projectName = 'testProject';
+      const teamId = '1';
       const spyGet = jest.spyOn(httpHelper, 'get').mockImplementation(jest.fn());
+      const spySprintEndpoint = jest.spyOn(endpoints, 'sprintEndpoint');
 
       // Act
-      await getSprints(sprintId);
+      await getSprints(organization, projectName, teamId);
 
       // Assert
-      expect(spyGet).toHaveBeenCalledWith(sprintEndpoint(sprintId));
+      expect(spyGet).toHaveBeenCalledWith(endpoints.sprintEndpoint(teamId));
+      expect(spySprintEndpoint).toHaveBeenCalledWith(organization, projectName, teamId);
     })
   });
 

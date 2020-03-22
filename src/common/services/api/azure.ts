@@ -8,11 +8,11 @@ export const getTeams = async (organization: string, projectName: string) => (
   await get<TeamCollection>(teamsEndpoint(organization, projectName))
 );
 
-export const getSprints = async (organization: string,projectName: string, boardId: string) => (
-  await get<SprintCollection>(sprintEndpoint(organization, projectName, boardId))
+export const getSprints = async (organization: string, projectName: string, teamId: string) => (
+  await get<SprintCollection>(sprintEndpoint(organization, projectName, teamId))
 );
 
-export const getWorkItemRelations = async (organization: string,projectName: string, teamId: string, iterationId: string) => (
+export const getWorkItemRelations = async (organization: string, projectName: string, teamId: string, iterationId: string) => (
   await get<WorkItemRelationCollection>(iterationEndpoint(organization, projectName, teamId, iterationId))
 );
 

@@ -1,4 +1,5 @@
 import { styled, Button, TextField, FormControlLabel } from "@material-ui/core";
+import { loginColors } from "../../styles";
 
 export const ContainerStyled = styled('div')({
   height: '100vh',
@@ -13,7 +14,7 @@ export const LoginForm = styled('form')({
   justifyContent: 'center',
   alignItems: 'center',
   padding: '30px',
-  boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
+  boxShadow: `0 10px 20px ${loginColors.boxShadow1}, 0 6px 6px ${loginColors.boxShadow2}`,
   transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
   width: '100%',
   maxWidth: '600px',

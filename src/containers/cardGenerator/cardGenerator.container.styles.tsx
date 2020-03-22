@@ -1,4 +1,4 @@
-import { styled, FormGroup, Typography } from "@material-ui/core";
+import { styled, FormGroup } from "@material-ui/core";
 
 export const CardPage = styled('div')({
   display: 'flex',
