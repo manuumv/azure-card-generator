@@ -1,16 +1,16 @@
 import * as React from "react";
 import { Button, Container } from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { splitEvery, uniq } from "ramda";
-import { Project, Sprint, Team, WorkItem } from "../../model/view";
+import { Project, Sprint, Team, WorkItem } from "./viewmodel";
 import { TopBarComponent } from "./components/topBar";
 import { CardPageComponent } from "./components/card/cardPage.component";
 import { FilterComponent } from "./components/filter";
 import { SelectOptionsComponent } from "./components/selectOptions";
 import { mapProjectsApiModelToVM } from "./mappers";
-import { getProjects } from "./services";
-import { UserService } from "../../common/services";
+import { getProjects } from "../../common/services/api";
+import { UserSessionService } from "../../common/services/storage";
 import { SpinnerComponent } from "../../common/components/spinner";
+import { filterStates, getFilteredWorkItems } from "./cardGenerator.container.business";
+import { SnackbarContext } from "../../common/providers";
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [projects, setProjects] = React.useState<Project[]>();
@@ -26,6 +26,8 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     workItems: false,
   });
 
+  const { useSnackbar } = React.useContext(SnackbarContext)
+
   const componentToPrintRef = React.useRef();
   const reactToPrintContent = () => componentToPrintRef.current;
   const reactToPrintTrigger = () => (
@@ -37,7 +39,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     </Button>
   );
 
-  const organization = UserService.get()?.organization;
+  const organization = UserSessionService.get()?.organization;
 
   React.useEffect(() => {
     setIsLoading({ ...isLoading, projects: true });
@@ -47,8 +49,8 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
         setIsLoading({ ...isLoading, projects: false });
       })
       .catch((error) => {
-        console.log(error);
-        setIsLoading({ ...isLoading, projects: true });
+        useSnackbar(error.message, 'error');
+        setIsLoading({ ...isLoading, projects: false });
       });
   }, []);
 
@@ -58,33 +60,23 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     setSprints(sprints);
   }, [projects, teams, sprints, teamName]);
   const handleChangeWorkItems = React.useCallback(setWorkItems, [workItems]);
-  const handleChangeFilters = React.useCallback((event: React.ChangeEvent<{ name?: string; value: string[] }>) => {
-    setFilters(event.target.value);
+  const handleChangeFilters = React.useCallback(({ target: { value } }: React.ChangeEvent<{ value: string[] }>) => {
+    setFilters(value);
   }, [filters]);
   const changeIsLoading = React.useCallback((textfield: 'projects' | 'teams' | 'sprints' | 'workItems', value: boolean) => {
     setIsLoading({ ...isLoading, [textfield]: value });
   }, [isLoading]);
 
   const states = React.useMemo(() => {
-    if (workItems) {
-      const states = uniq(workItems.flat().map(({ state }) => state));
-      setFilters(states);
-      return states;
-    } else {
-      setFilters([]);
-      return [];
-    }
+    const filteredStates = filterStates(workItems);
+    setFilters(filteredStates);
+    return filteredStates;
   }, [workItems]);
 
-  const filteredWorkItems = React.useMemo(() => {
-    const filterWorkItems = workItems && workItems.filter(workItem => filters.includes(workItem.state));
-    const paginatedWorkItems = filterWorkItems && splitEvery(10, filterWorkItems);
-    return paginatedWorkItems;
-  }, [filters, states, workItems]);
+  const filteredWorkItems = React.useMemo(() => getFilteredWorkItems(workItems, filters), [filters, states, workItems]);
 
   return (
     <>
-      <CssBaseline />
       <TopBarComponent />
       <Container>
         <SelectOptionsComponent

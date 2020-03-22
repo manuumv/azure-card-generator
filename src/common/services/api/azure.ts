@@ -1,4 +1,4 @@
-import { get } from "../../../common/utils/httpHelper";
+import { get } from "../../utils/httpHelper";
 import { teamsEndpoint, sprintEndpoint, iterationEndpoint, workItemsEndpoint, projectEndpoint } from './endpoints';
 import { TeamCollection, SprintCollection, WorkItemCollection, WorkItemRelationCollection, ProjectCollection } from '../../../model/api';
 

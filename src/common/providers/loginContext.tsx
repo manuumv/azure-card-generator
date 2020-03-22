@@ -1,9 +1,9 @@
 import * as React from "react";
 import { User } from "../../model/entities";
-import { UserService } from "../services";
+import { UserSessionService } from "../services/storage";
 
 interface UserContext {
-  onLogin: (user: User, rememberUser: boolean) => void;
+  onLogin: (user: User, rememberLogin: boolean) => void;
   onLogout: () => void;
   user: User;
 }
@@ -20,22 +20,22 @@ export const LoginProvider: React.FunctionComponent = ({ children }) => {
   const [user, setUser] = React.useState<User>(null);
 
   React.useEffect(() => {
-    const loggedInfo = UserService.get();
+    const loggedInfo = UserSessionService.get();
     if (loggedInfo) {
       setUser(loggedInfo);
     }
   }, []);
 
   const onLogout = React.useCallback(() => {
-    UserService.remove();
+    UserSessionService.remove();
     setUser(null);
   }, []);
 
-  const onLogin = React.useCallback((user: User) => {
+  const onLogin = React.useCallback((user: User, rememberLogin: boolean) => {
     setUser(user);
 
-    if (user.remember) {
-      UserService.save(user);
+    if (rememberLogin) {
+      UserSessionService.save(user);
     }
   }, []);
 

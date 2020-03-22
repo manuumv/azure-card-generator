@@ -1,5 +1,5 @@
 import { headers } from './constants';
-import { UserService } from '../../services';
+import { UserSessionService } from '../../services/storage';
 import { User } from '../../../model/entities';
 
 export const get = async <T>(endPoint: string): Promise<T> => request(endPoint, { headers, method: 'GET' });
@@ -17,7 +17,7 @@ export const post = <T>(endPoint: string, bodyObject: object, hasResponseContent
 );
 
 export const request = async <T>(endPoint: string, requestInit: RequestInit, hasResponseContent?: boolean): Promise<T> => {
-  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, UserService.get()));
+  const response = await fetch(endPoint, getRequestInitWithAuthorization(requestInit, UserSessionService.get()));
   if (response.ok) {
     if (hasResponseContent || response.status === 200) {
       return await response.json();

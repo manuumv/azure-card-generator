@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WorkItem } from '../../../../model/view';
+import { WorkItem } from '../../viewmodel';
 import { CardPage } from './cardPage.component.styles';
 import { CardComponent } from './card.component';
 

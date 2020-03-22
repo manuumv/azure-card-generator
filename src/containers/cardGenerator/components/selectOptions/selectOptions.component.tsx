@@ -2,11 +2,11 @@ import * as React from 'react';
 import { SelectComponent } from '../../../../common/components/select';
 import ReactToPrint, { ITriggerProps } from 'react-to-print';
 import { SelectContainer } from './selectOptions.component.styles';
-import { Team, Sprint, Project, WorkItem } from '../../../../model/view';
+import { Team, Sprint, Project, WorkItem } from '../../viewmodel';
 import { isNumber } from '../../../../common/utils';
-import { getTeams, getSprints, getWorkItemRelations, getWorkItems } from '../../services';
+import { getTeams, getSprints, getWorkItemRelations, getWorkItems } from '../../../../common/services/api';
 import { mapTeamsApiModelToVM, mapSprintsApiModelToVM, mapWorkItemRelationsApiModelToVM, mapWorkItemsApiModelToVM } from '../../mappers';
-import { UserService } from '../../../../common/services';
+import { UserSessionService } from '../../../../common/services/storage';
 import { mapToSelectOptions } from '../../../../common/mappers';
 import { SpinnerComponent } from '../../../../common/components/spinner';
 
@@ -32,7 +32,7 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
   const [selectedProject, setSelectedProject] = React.useState<string | number>('');
   const [selectedTeam, setSelectedTeam] = React.useState<string | number>('');
   const [selectedSprint, setSelectedSprint] = React.useState<string | number>('');
-  const organization = UserService.get()?.organization;
+  const organization = UserSessionService.get()?.organization;
 
   React.useEffect(() => {
     setSelectedTeam('');

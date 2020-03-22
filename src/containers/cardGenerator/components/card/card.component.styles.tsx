@@ -1,5 +1,5 @@
 import { styled, Card, Typography, CardContent } from "@material-ui/core";
-import { WorkItemType } from "../../../../model/view";
+import { WorkItemType } from "../../viewmodel";
 import { WorkItemTypeColors } from "../../../../styles";
 
 export const CardContainer = styled(Card)({

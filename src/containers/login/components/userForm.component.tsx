@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { UserFormErrors } from '../login.container.business';
-import { Input, FormControlCheckbox } from './userForm.styles';
-import { User, UserProperties } from '../../../model/entities';
+import { Input, FormControlCheckbox } from './userForm.component.styles';
+import { UserForm, UserFormKeys } from '../viewmodel';
 import { Checkbox } from '@material-ui/core';
 
 interface Props {
-  user: User;
+  user: UserForm;
   formErrors: UserFormErrors;
   onChangeUser: (key: string, value: string | boolean) => void;
 }
 
-export const UserForm: React.FunctionComponent<Props> = ({ user, formErrors, onChangeUser }) => {
+export const UserFormComponent: React.FunctionComponent<Props> = ({ user, formErrors, onChangeUser }) => {
 
-  const onChange = (key: UserProperties) => ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (key: UserFormKeys) => ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     onChangeUser(key, value)
   }
 

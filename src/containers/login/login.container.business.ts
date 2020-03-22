@@ -1,9 +1,10 @@
 import { ErrorList, FieldErrorList } from "async-validator";
-import { UserService } from "../../common/services";
+import { UserSessionService } from "../../common/services/storage";
 import { Color } from "@material-ui/lab";
 import { User } from "../../model/entities";
 import { validateUser } from "./validations";
-import { login } from './services';
+import { getProjects } from '../../common/services/api';
+import { UserForm } from "./viewmodel";
 
 export interface UserFormErrors {
   name: string,
@@ -23,16 +24,16 @@ export const formatFormErrors = (errors: ErrorList) => {
 }
 
 export const onSuccessLogin = async (
-  user: User,
+  user: UserForm,
   handleFormError: (errors: ErrorList) => void,
   handleIsLogging: (value: boolean) => void,
   onLogin: (user: User, rememberUser: boolean) => void,
 ) => {
   await validateUser(user);
   handleFormError(null);
-  UserService.set(user);
+  UserSessionService.set(user);
   handleIsLogging(true);
-  await login(user.organization);
+  await getProjects(user.organization);
   handleIsLogging(false);
   onLogin(user, user.remember);
 }
@@ -43,8 +44,8 @@ export const onErrorLogin = (
   handleFormError: (errors: ErrorList) => void,
   useSnackbar: (message: string, severity: Color) => void
 ) => {
-  UserService.set(null);
-  UserService.remove();
+  UserSessionService.set(null);
+  UserSessionService.remove();
   setIsLogging(false);
   (error.errors && error.fields) ? handleFormError(error.errors) : useSnackbar('Failed on login', 'error');
 }

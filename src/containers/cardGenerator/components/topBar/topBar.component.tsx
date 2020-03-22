@@ -2,12 +2,12 @@ import *  as React from 'react';
 import { Toolbar, Button } from '@material-ui/core';
 import { Title, HeaderBar, UserName } from './topBar.component.styles';
 import { LoginContext } from '../../../../common/providers';
-import { UserService } from '../../../../common/services';
+import { UserSessionService } from '../../../../common/services/storage';
 
 export const TopBarComponent: React.FunctionComponent = () => {
   const { onLogout } = React.useContext(LoginContext);
 
-  const username = UserService.get()?.name;
+  const username = UserSessionService.get()?.name;
 
   return (
     <HeaderBar position="relative">

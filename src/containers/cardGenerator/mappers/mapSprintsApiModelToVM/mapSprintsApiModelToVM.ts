@@ -1,5 +1,5 @@
 import * as ApiModel from "../../../../model/api";
-import * as ViewModel from "../../../../model/view";
+import * as ViewModel from "../../viewmodel";
 
 export const mapSprintsApiModelToVM = (sprints: ApiModel.SprintCollection): ViewModel.Sprint[] => (
   sprints && Array.isArray(sprints.value) ?
