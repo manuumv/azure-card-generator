@@ -1,4 +1,4 @@
-import * as httpHelper from '../../utils/httpHelper';
+import * as httpHelper from '../../common/utils/httpHelper';
 import { getSprints, getTeams, getWorkItemRelations, getWorkItems } from './azure';
 import * as endpoints from './endpoints';
 

@@ -2,9 +2,12 @@ import * as React from 'react';
 import { SpinnerComponent } from '../../common/components/spinner';
 import { LoginContext, SnackbarContext } from '../../common/providers';
 import { UserFormComponent } from './components';
-import { onErrorLogin, onSuccessLogin, UserFormErrors } from './login.container.business';
 import { ContainerStyled, LoginButton, LoginForm } from './login.container.styles';
-import { UserForm, UserFormKeys } from './viewmodel';
+import { UserForm, UserFormKeys, UserFormErrors } from './viewmodel';
+import { UserSessionService } from '../../common/services';
+import { validateUser } from './validations';
+import { formatFormErrors } from './login.container.business';
+import { getProjects } from '../../api/rest';
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [user, setUser] = React.useState<UserForm>({ name: '', organization: '', token: '', remember: false });
@@ -21,9 +24,18 @@ export const LoginContainer: React.FunctionComponent = () => {
   const onClickLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      await onSuccessLogin(user, setFormErrors, setIsLogging, onLogin);
+      await validateUser(user);
+      setFormErrors(formatFormErrors(null));
+      UserSessionService.set(user);
+      setIsLogging(true);
+      await getProjects(user.organization);
+      setIsLogging(false);
+      onLogin(user, user.remember);
     } catch (error) {
-      onErrorLogin(error, setIsLogging, setFormErrors, useSnackbar)
+      UserSessionService.set(null);
+      UserSessionService.remove();
+      setIsLogging(false);
+      (error.errors && error.fields) ? setFormErrors(formatFormErrors(error.errors)) : useSnackbar('Failed on login', 'error');
     }
   };
 

@@ -1,5 +1,5 @@
 import * as mappers from './mapSprintsApiModelToVM';
-import * as ApiModel from "../../../../model/api";
+import * as ApiModel from "../../../../api/model";
 import * as ViewModel from "../../viewmodel";
 
 describe('mapSprintsApiModelToVM', () => {

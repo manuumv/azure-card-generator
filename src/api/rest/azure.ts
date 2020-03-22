@@ -1,6 +1,6 @@
-import { get } from "../../utils/httpHelper";
+import { get } from "../../common/utils/httpHelper";
 import { teamsEndpoint, sprintEndpoint, iterationEndpoint, workItemsEndpoint, projectEndpoint } from './endpoints';
-import { TeamCollection, SprintCollection, WorkItemCollection, WorkItemRelationCollection, ProjectCollection } from '../../../model/api';
+import { TeamCollection, SprintCollection, WorkItemCollection, WorkItemRelationCollection, ProjectCollection } from '../model';
 
 export const getProjects = async (organization: string) => await get<ProjectCollection>(projectEndpoint(organization));
 

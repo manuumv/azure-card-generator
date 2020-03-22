@@ -1,8 +1,8 @@
 import * as httpHelper from './httpHelper';
 import { headers } from './constants';
 import { MockParams } from 'jest-fetch-mock/types';
-import { UserSessionService } from '../../services/storage';
-import { User } from '../../../model/entities';
+import { UserSessionService } from '../../services';
+import { User } from '../../entities';
 
 describe('httpHelper', () => {
   describe('request', () => {

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { User } from "../../model/entities";
-import { UserSessionService } from "../services/storage";
+import { User } from "../entities";
+import { UserSessionService } from "../services";
 
 interface UserContext {
   onLogin: (user: User, rememberLogin: boolean) => void;

@@ -1,6 +1,6 @@
 import { headers } from './constants';
-import { UserSessionService } from '../../services/storage';
-import { User } from '../../../model/entities';
+import { UserSessionService } from '../../services';
+import { User } from '../../entities';
 
 export const get = async <T>(endPoint: string): Promise<T> => request(endPoint, { headers, method: 'GET' });
 

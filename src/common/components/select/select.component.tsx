@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { InputLabel, Select, MenuItem } from '@material-ui/core';
 import { FormControlContainer } from './select.component.styles';
-import { SelectValue } from '../../../model/entities';
+import { SelectValue } from '../../entities';
 
 interface Props {
   values: SelectValue[];

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { UserFormErrors } from '../login.container.business';
 import { Input, FormControlCheckbox } from './userForm.component.styles';
-import { UserForm, UserFormKeys } from '../viewmodel';
+import { UserForm, UserFormKeys, UserFormErrors } from '../viewmodel';
 import { Checkbox } from '@material-ui/core';
 
 interface Props {

@@ -1,4 +1,4 @@
-import { User } from '../../../model/entities';
+import { User } from '../entities';
 
 const loadUser = (): User | null => {
   try {

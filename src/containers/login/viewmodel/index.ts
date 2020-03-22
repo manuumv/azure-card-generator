@@ -1,1 +1,1 @@
-export { UserForm, UserFormKeys } from './userForm'
+export { UserForm, UserFormErrors, UserFormKeys } from './userForm'
