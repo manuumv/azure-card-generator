@@ -16,13 +16,13 @@ export const request = async <T>(endPoint: string, requestInit: RequestInit): Pr
   }
 }
 
-export const getRequestInitWithAuthorization = (requestInit: RequestInit, { token, name }: User): RequestInit => (
-  token ?
+export const getRequestInitWithAuthorization = (requestInit: RequestInit, user: User): RequestInit => (
+  user?.token ?
     {
       ...requestInit,
       headers: {
         ...requestInit.headers,
-        Authorization: `Basic ${btoa(`${name}:${token}`)}`,
+        Authorization: `Basic ${btoa(`${user.name}:${user.token}`)}`,
       }
     } :
     requestInit

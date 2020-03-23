@@ -11,22 +11,24 @@ describe('httpHelper', () => {
       const url = '/test';
       const requestInit: RequestInit = { headers };
       const expectedResult = { ok: true };
-      const token = process.env.TOKEN;
+      const user: User = { name: 'name', organization: 'organization', token: 'token' };
       const response: MockParams = {
         status: 200,
         statusText: 'Accepted',
         headers: headers as { [key: string]: string },
       };
-      const requestStub = jest.spyOn(httpHelper, 'request');
-      const setAuthorizationHeaderStub = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization');
+      const spyUserSessionServiceGet = jest.spyOn(UserSessionService, 'get').mockReturnValue(user);
+      const spyRequest = jest.spyOn(httpHelper, 'request');
+      const spyGetRequestInitWithAuthorization = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization').mockReturnValue(requestInit);
       fetchMock.mockResponse(JSON.stringify(expectedResult), response);
 
       // Act
       httpHelper.request(url, requestInit)
         .then((response) => {
           // Assert
-          expect(requestStub).toBeCalledWith(url, requestInit);
-          expect(setAuthorizationHeaderStub).toBeCalledWith(requestInit, token);
+          expect(spyRequest).toBeCalledWith(url, requestInit);
+          expect(spyUserSessionServiceGet).toHaveBeenCalled();
+          expect(spyGetRequestInitWithAuthorization).toBeCalledWith(requestInit, user);
           expect(fetchMock.mock.calls[0][1]['headers']).toEqual(requestInit.headers);
           expect(response).toEqual(expectedResult);
         });
