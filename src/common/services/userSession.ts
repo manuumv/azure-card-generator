@@ -1,12 +1,12 @@
 import { User } from '../entities';
 
-const loadUser = (): User | null => {
+export const loadUser = (): User | null => {
   try {
-    const serializedToken = localStorage.getItem('user');
-    if (!serializedToken) {
+    const user = localStorage.getItem('user');
+    if (!user) {
       return null;
     }
-    return JSON.parse(serializedToken);
+    return JSON.parse(user);
   } catch (error) {
     console.log(error);
     return null;

@@ -2,7 +2,8 @@
   "rootDir": "../../",
   "preset": "ts-jest",
   "setupFiles": [
-    "<rootDir>/config/test/setupTest.ts"
+    "<rootDir>/config/test/setupTest.ts",
+    "jest-localstorage-mock"
   ],
   "restoreMocks": true,
   "snapshotSerializers": [
