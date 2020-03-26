@@ -14,6 +14,7 @@ export const CardPageComponent: React.FunctionComponent<Props> = ({ workItems, t
       {
         Array.isArray(workItems) &&
         workItems.map((childWorkItems, index) => (
+          Array.isArray(childWorkItems) &&
           <CardPage key={index}>
             {
               childWorkItems.map((childWorkItem) => (

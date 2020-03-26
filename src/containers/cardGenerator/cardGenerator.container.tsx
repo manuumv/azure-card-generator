@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container, Button } from "@material-ui/core";
 import { SpinnerComponent } from "common/components/spinner";
-import { filterStates, getFilteredWorkItems } from "./cardGenerator.container.business";
+import { filterStates, filterWorkItems } from "./cardGenerator.container.business";
 import { FilterComponent, SelectOptionsComponent, TopBarComponent, CardPageComponent } from "./components";
 import { Loading, Project, Sprint, Team, WorkItem } from "./viewmodel";
 
@@ -41,7 +41,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     return filteredStates;
   }, [workItems]);
 
-  const filteredWorkItems = React.useMemo(() => getFilteredWorkItems(workItems, filters), [filters, states, workItems]);
+  const filteredWorkItems = React.useMemo(() => filterWorkItems(workItems, filters), [filters, states, workItems]);
 
   const reactToPrintContent = () => componentToPrintRef.current;
   const reactToPrintTrigger = () => (
