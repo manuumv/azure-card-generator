@@ -38,7 +38,7 @@ export const SelectTeamComponent: React.FunctionComponent<Props> = (props) => {
   }
 
   return (
-    <SpinnerComponent displayChildren={true} isLoading={props.isLoading}>
+    <SpinnerComponent isLoading={props.isLoading}>
       <SelectComponent
         id="teams"
         label="Teams:"

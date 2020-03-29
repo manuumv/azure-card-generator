@@ -3,12 +3,11 @@ import { Toolbar, Button } from '@material-ui/core';
 import { Title, HeaderBar, UserName } from './topBar.component.styles';
 import { LoginContext } from 'common/providers';
 import { UserSessionService } from 'common/services';
-import { pathOr } from 'ramda';
 
 export const TopBarComponent: React.FunctionComponent = () => {
   const { onLogout } = React.useContext(LoginContext);
 
-  const username = pathOr('', ['name'], UserSessionService.get());
+  const username = UserSessionService.get()?.name ?? '';
 
   return (
     <HeaderBar position="relative">

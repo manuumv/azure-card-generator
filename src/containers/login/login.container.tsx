@@ -59,7 +59,7 @@ export const LoginContainer: React.FunctionComponent = () => {
           user={user}
           onChangeUser={onChangeUser}
         />
-        <SpinnerComponent displayChildren={true} isLoading={isLogging}>
+        <SpinnerComponent isLoading={isLogging}>
           <LoginButton disabled={isLogging} variant="contained" type="submit">Login</LoginButton>
         </SpinnerComponent>
       </LoginForm>
