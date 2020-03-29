@@ -1,4 +1,4 @@
-# REACT APP TEMPLATE
+# AZURE CARD GENERATOR
 
 ## Installation
 
@@ -20,16 +20,16 @@ If you want watch mode: `npm run test:watch`.
 
 ## Production server
 
-Run `npm run start:prod` for a production server with node. Navigate to `http://localhost:8000`.
+Run `npm run start:prod` for a production server with node. Navigate to `http://localhost:9000`.
 
 ## Docker
 
 build image
 ```docker
-docker build -t react-app .
+docker build -t azure-card-generator .
 ```
 
 run container
 ```
-docker run -p 8000:8000 react-app
+docker run -p 9000:9000 azure-card-generator
 ```

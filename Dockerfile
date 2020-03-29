@@ -18,6 +18,6 @@ ENV NODE_ENV=production PUBLIC_PATH="./dist"
 RUN npm install
 
 # Port exposing
-EXPOSE 8000
+EXPOSE 9000
 
 CMD ["npm", "start"]
