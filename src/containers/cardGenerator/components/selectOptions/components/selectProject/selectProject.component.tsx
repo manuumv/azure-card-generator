@@ -4,8 +4,8 @@ import { mapToSelectOptions } from 'common/mappers';
 import { getTeams, getProjects } from 'api/rest';
 import { UserSessionService } from 'common/services';
 import { isNumber } from 'common/utils';
-import { mapTeamsApiModelToVM, mapProjectsApiModelToVM } from '../../../mappers';
-import { Project, Team } from '../../../viewmodel';
+import { mapTeamsApiModelToVM, mapProjectsApiModelToVM } from '../../../../mappers';
+import { Project, Team } from '../../../../viewmodel';
 import { SnackbarContext } from 'common/providers';
 
 interface Props {
@@ -31,7 +31,7 @@ export const SelectProjectComponent: React.FunctionComponent<Props> = (props) =>
       const projects = await getProjects(organization);
       props.onChangeProject(mapProjectsApiModelToVM(projects));
     } catch (error) {
-      useSnackbar(error, 'error');
+      useSnackbar(error.message, 'error');
     } finally {
       props.changeIsLoading(false);
     }
@@ -45,7 +45,7 @@ export const SelectProjectComponent: React.FunctionComponent<Props> = (props) =>
         const teams = await getTeams(organization, props.projects[value].name);
         props.onChangeTeam(mapTeamsApiModelToVM(teams))
       } catch (error) {
-        useSnackbar(error, 'error');
+        useSnackbar(error.message, 'error');
       } finally {
         props.changeIsLoading(false);
       }

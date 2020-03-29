@@ -102,7 +102,7 @@ describe('mapWorkItemsApiModelToVM', () => {
     it('should return none', () => {
       // Arrange
       const type = 'TEST';
-      const expectedResult: ViewModel.WorkItemType = 'NONE';
+      const expectedResult: ViewModel.WorkItemType = '';
 
       // Act
       const result = mappers.mapWorkItemTypeApiModelToVM(type);

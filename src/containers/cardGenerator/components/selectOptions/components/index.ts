@@ -1,3 +1,3 @@
-export { SelectProjectComponent } from './selectProject.component';
-export { SelectSprintComponent } from './selectSprint.component';
-export { SelectTeamComponent } from './selectTeam.component';
+export { SelectProjectComponent } from './selectProject';
+export { SelectSprintComponent } from './selectSprint';
+export { SelectTeamComponent } from './selectTeam';

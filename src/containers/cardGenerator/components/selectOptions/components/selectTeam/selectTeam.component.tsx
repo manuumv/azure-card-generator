@@ -4,8 +4,8 @@ import { mapToSelectOptions } from 'common/mappers';
 import { getSprints } from 'api/rest';
 import { UserSessionService } from 'common/services';
 import { isNumber } from 'common/utils';
-import { mapSprintsApiModelToVM } from '../../../mappers';
-import { Sprint, Team } from '../../../viewmodel';
+import { mapSprintsApiModelToVM } from '../../../../mappers';
+import { Sprint, Team } from '../../../../viewmodel';
 import { SnackbarContext } from 'common/providers';
 
 interface Props {
@@ -30,7 +30,7 @@ export const SelectTeamComponent: React.FunctionComponent<Props> = (props) => {
         const sprints = await getSprints(organization, props.projectName, props.teams[value].id);
         props.onChangeSprint(mapSprintsApiModelToVM(sprints), props.projectName);
       } catch (error) {
-        useSnackbar(error, 'error');
+        useSnackbar(error.message, 'error');
       } finally {
         props.changeIsLoading(false);
       }

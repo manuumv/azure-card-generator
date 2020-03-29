@@ -22,11 +22,13 @@ export const mapWorkItemApiModelToVM = (workItem: ApiModel.WorkItem): ViewModel.
 
 export const mapWorkItemTypeApiModelToVM = (type: string): ViewModel.WorkItemType => {
   switch (type.toUpperCase()) {
+    case 'TASK':
+      return 'TASK';
     case 'BUG':
       return 'BUG';
     case "PRODUCT BACKLOG ITEM":
       return 'PRODUCT BACKLOG ITEM';
     default:
-      return 'NONE';
+      return '';
   }
 }

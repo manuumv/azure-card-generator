@@ -1,4 +1,4 @@
-export type WorkItemType = 'BUG' | 'PRODUCT BACKLOG ITEM' | 'NONE';
+export type WorkItemType = 'BUG' | 'PRODUCT BACKLOG ITEM' | 'TASK' | '';
 
 export interface WorkItem {
   id: number;

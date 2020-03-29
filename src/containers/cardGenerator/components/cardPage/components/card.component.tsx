@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WorkItem } from '../../viewmodel';
+import { WorkItem } from '../../../viewmodel';
 import { CardContainer, getTypeComponent, Description, Effort, TeamName, FooterContainer, CardBody, Title, HeaderContainer } from './card.component.styles';
 import { Divider } from '@material-ui/core';
 

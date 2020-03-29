@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WorkItem } from '../../viewmodel';
 import { CardPage } from './cardPage.component.styles';
-import { CardComponent } from './card.component';
+import { CardComponent } from './components/card.component';
 import { filterWorkItems } from './cardPage.component.business';
 
 interface Props {

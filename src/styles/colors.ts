@@ -1,6 +1,7 @@
 export const WorkItemTypeColors = {
   bug: 'rgb(204, 41, 61)',
   pbi: 'rgb(0, 122, 204)',
+  task: 'rgb(242, 203, 29)',
 };
 
 export const cardColors = {

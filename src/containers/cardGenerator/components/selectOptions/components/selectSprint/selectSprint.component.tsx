@@ -4,9 +4,10 @@ import { mapToSelectOptions } from 'common/mappers';
 import { getWorkItemRelations, getWorkItems } from 'api/rest';
 import { UserSessionService } from 'common/services';
 import { isNumber } from 'common/utils';
-import { mapWorkItemRelationsApiModelToVM, mapWorkItemsApiModelToVM } from '../../../mappers';
-import { Sprint, WorkItem } from '../../../viewmodel';
+import { mapWorkItemRelationsApiModelToVM, mapWorkItemsApiModelToVM } from '../../../../mappers';
+import { Sprint, WorkItem } from '../../../../viewmodel';
 import { SnackbarContext } from 'common/providers';
+import { handleEmptyWorkItemIds } from './selectSprint.component.business';
 
 interface Props {
   sprints: Sprint[];
@@ -30,10 +31,12 @@ export const SelectSprintComponent: React.FunctionComponent<Props> = (props) => 
         const organization = UserSessionService.get()?.organization;
         const workItemRelations = await getWorkItemRelations(organization, props.projectName, props.teamId, props.sprints[value].id);
         const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
+        await handleEmptyWorkItemIds(workItemIds)
         const workItems = await getWorkItems(organization, props.projectName, workItemIds);
         props.onChangeWorkItems(mapWorkItemsApiModelToVM(workItems));
       } catch (error) {
-        useSnackbar(error, 'error');
+        props.onChangeWorkItems([]);
+        useSnackbar(error.message, 'error');
       } finally {
         props.changeIsLoading(false);
       }
