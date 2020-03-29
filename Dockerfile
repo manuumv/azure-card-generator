@@ -1,12 +1,12 @@
 # Builder
-FROM node:10-alpine AS builder
+FROM node:12.16.1-alpine AS builder
 COPY / ./app
 WORKDIR /app
 
 RUN npm install && npm run build:prod
 
 # Build
-FROM node:10-alpine
+FROM node:12.16.1-alpine
 COPY --from=builder /app/dist ./app/dist
 
 WORKDIR /app
