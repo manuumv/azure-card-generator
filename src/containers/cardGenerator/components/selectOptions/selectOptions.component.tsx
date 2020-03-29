@@ -4,18 +4,20 @@ import { Loading, LoadingKeys, Project, Sprint, Team, WorkItem } from '../../vie
 import { SelectContainer, } from './selectOptions.component.styles';
 import { SelectProjectComponent, SelectTeamComponent, SelectSprintComponent } from './components';
 import { isNumber } from 'common/utils';
+import { path, pathOr } from 'ramda';
+import { Button } from '@material-ui/core';
 
 interface Props {
   teams: Team[];
   projects: Project[];
   sprints: Sprint[];
   isLoading: Loading;
+  isDisabledPrintButton: boolean;
   onChangeProject: (projects: Project[]) => void;
   onChangeTeam: (team: Team[]) => void;
   onChangeSprint: (sprints: Sprint[], teamName: string) => void;
   onChangeWorkItems: (workItems: WorkItem[]) => void;
-  reactToPrintTrigger: () => React.ReactElement;
-  reactToPrintContent: () => React.ReactInstance;
+  componentToPrintRef: React.MutableRefObject<undefined>;
   changeIsLoading: (key: LoadingKeys, value: boolean) => void;
 }
 
@@ -36,9 +38,13 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
     props.onChangeWorkItems(null)
   }, [selectedTeam]);
 
-  const onChangeIsLoading = React.useCallback((key: LoadingKeys) => (value: boolean) => props.changeIsLoading(key, value), [props.isLoading]);
+  const onChangeIsLoading = React.useCallback((key: LoadingKeys) => ((value: boolean) =>
+    props.changeIsLoading(key, value)
+  ), [props.isLoading]);
+
   const projectName = isNumber(selectedProject) ? props.projects[selectedProject].name : '';
-  const teamId = isNumber(selectedTeam) ? props.teams[selectedTeam].id : '';
+  const teamId = pathOr('', [selectedTeam, 'id'], props.teams);
+  const reactToPrintContent = () => props.componentToPrintRef.current;
 
   return (
     <SelectContainer>
@@ -71,9 +77,13 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
         changeIsLoading={onChangeIsLoading('sprints')}
       />
       <ReactToPrint
-        trigger={props.reactToPrintTrigger}
-        content={props.reactToPrintContent}
+        trigger={reactToPrintTrigger(props.isDisabledPrintButton)}
+        content={reactToPrintContent}
       />
     </SelectContainer>
   )
 }
+
+const reactToPrintTrigger = (disabled: boolean) => () => (
+  <Button disabled={disabled}>Print</Button>
+);

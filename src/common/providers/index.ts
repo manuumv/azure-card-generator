@@ -1,2 +1,2 @@
-export { LoginContext, LoginProvider } from './loginContext';
+export { LoginContext, LoginProvider } from './login';
 export { SnackbarContext, SnackbarProvider } from './snackbar';

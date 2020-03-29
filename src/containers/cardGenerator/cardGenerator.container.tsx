@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container, Button } from "@material-ui/core";
 import { SpinnerComponent } from "common/components/spinner";
-import { filterStates, filterWorkItems } from "./cardGenerator.container.business";
+import { filterStates } from "./cardGenerator.container.business";
 import { FilterComponent, SelectOptionsComponent, TopBarComponent, CardPageComponent } from "./components";
 import { Loading, Project, Sprint, Team, WorkItem } from "./viewmodel";
 
@@ -41,15 +41,6 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     return filteredStates;
   }, [workItems]);
 
-  const filteredWorkItems = React.useMemo(() => filterWorkItems(workItems, filters), [filters, states, workItems]);
-
-  const reactToPrintContent = () => componentToPrintRef.current;
-  const reactToPrintTrigger = () => (
-    <Button disabled={!(Array.isArray(workItems) && workItems.length > 0)} variant="outlined">
-      Print
-    </Button>
-  );
-
   return (
     <>
       <TopBarComponent />
@@ -63,9 +54,9 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
           onChangeTeam={onChangeTeam}
           onChangeSprint={onChangeSprint}
           onChangeWorkItems={onChangeWorkItems}
-          reactToPrintTrigger={reactToPrintTrigger}
-          reactToPrintContent={reactToPrintContent}
           changeIsLoading={changeIsLoading}
+          componentToPrintRef={componentToPrintRef}
+          isDisabledPrintButton={!(Array.isArray(workItems) && workItems.length > 0)}
         />
         <FilterComponent
           states={states}
@@ -75,8 +66,9 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
         <SpinnerComponent isLoading={isLoading.workItems}>
           <div ref={componentToPrintRef}>
             <CardPageComponent
-              workItems={filteredWorkItems}
+              workItems={workItems}
               teamName={teamName}
+              filters={filters}
             />
           </div>
         </SpinnerComponent>

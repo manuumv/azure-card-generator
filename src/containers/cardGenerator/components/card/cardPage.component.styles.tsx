@@ -8,4 +8,4 @@ export const CardPage = styled('div')({
   justifyContent: 'space-between',
   padding: '5vh',
   pageBreakAfter: 'always',
-})
+});
