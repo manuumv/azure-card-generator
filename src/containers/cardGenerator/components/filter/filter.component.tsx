@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const FilterComponent: React.FunctionComponent<Props> = ({ states, handleChangeFilters, filters }) => {
-  const renderValue = (selected) => (selected as any).join(', ');
+  const renderValue = (selected: React.ReactNode[]) => (selected).join(', ');
   return (
     <FormControl disabled={!states || states && states.length === 0}>
       <Label id="filter-state-label">States filter:</Label>

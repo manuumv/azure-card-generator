@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Container, Button } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { SpinnerComponent } from "common/components/spinner";
 import { filterStates } from "./cardGenerator.container.business";
 import { FilterComponent, SelectOptionsComponent, TopBarComponent, CardPageComponent } from "./components";
-import { Loading, Project, Sprint, Team, WorkItem } from "./viewmodel";
+import { Loading, Project, Sprint, Team, WorkItem, LoadingKeys } from "./viewmodel";
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [projects, setProjects] = React.useState<Project[]>();
@@ -31,7 +31,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   const handleChangeFilters = React.useCallback(({ target: { value } }: React.ChangeEvent<{ value: string[] }>) => {
     setFilters(value);
   }, [filters]);
-  const changeIsLoading = React.useCallback((textfield: 'projects' | 'teams' | 'sprints' | 'workItems', value: boolean) => {
+  const changeIsLoading = React.useCallback((textfield: LoadingKeys, value: boolean) => {
     setIsLoading({ ...isLoading, [textfield]: value });
   }, [isLoading]);
 
@@ -41,6 +41,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
     return filteredStates;
   }, [workItems]);
 
+  const isDisabledPrintButton = !(Array.isArray(workItems) && workItems.length > 0);
   return (
     <>
       <TopBarComponent />
@@ -56,7 +57,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
           onChangeWorkItems={onChangeWorkItems}
           changeIsLoading={changeIsLoading}
           componentToPrintRef={componentToPrintRef}
-          isDisabledPrintButton={!(Array.isArray(workItems) && workItems.length > 0)}
+          isDisabledPrintButton={isDisabledPrintButton}
         />
         <FilterComponent
           states={states}

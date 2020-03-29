@@ -29,10 +29,10 @@ export const SelectTeamComponent: React.FunctionComponent<Props> = (props) => {
         const organization = UserSessionService.get()?.organization;
         const sprints = await getSprints(organization, props.projectName, props.teams[value].id);
         props.onChangeSprint(mapSprintsApiModelToVM(sprints), props.projectName);
-        props.changeIsLoading(false);
       } catch (error) {
-        props.changeIsLoading(false);
         useSnackbar(error, 'error');
+      } finally {
+        props.changeIsLoading(false);
       }
     }
   }

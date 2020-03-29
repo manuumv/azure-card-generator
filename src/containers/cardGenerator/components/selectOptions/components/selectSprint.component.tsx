@@ -32,10 +32,10 @@ export const SelectSprintComponent: React.FunctionComponent<Props> = (props) => 
         const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
         const workItems = await getWorkItems(organization, props.projectName, workItemIds);
         props.onChangeWorkItems(mapWorkItemsApiModelToVM(workItems));
-        props.changeIsLoading(false);
       } catch (error) {
-        props.changeIsLoading(false);
         useSnackbar(error, 'error');
+      } finally {
+        props.changeIsLoading(false);
       }
     }
   }

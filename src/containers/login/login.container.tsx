@@ -8,6 +8,7 @@ import { UserSessionService } from 'common/services';
 import { validateUser } from './validations';
 import { formatFormErrors } from './login.container.business';
 import { getProjects } from 'api/rest';
+import { ErrorList } from 'async-validator';
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [user, setUser] = React.useState<UserForm>({ name: '', organization: '', token: '', remember: false });
@@ -21,27 +22,38 @@ export const LoginContainer: React.FunctionComponent = () => {
     setUser({ ...user, [key]: value })
   ), [user]);
 
-  const onClickLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      await validateUser(user);
-      setFormErrors(formatFormErrors(null));
-      UserSessionService.set(user);
-      setIsLogging(true);
-      await getProjects(user.organization);
-      setIsLogging(false);
-      onLogin(user, user.remember);
+      await handleSuccessfulLogin();
     } catch (error) {
-      UserSessionService.set(null);
-      UserSessionService.remove();
+      handleErrorLogin(error);
+    } finally {
       setIsLogging(false);
-      (error.errors && error.fields) ? setFormErrors(formatFormErrors(error.errors)) : useSnackbar('Failed on login', 'error');
+    }
+  };
+
+  const handleSuccessfulLogin = async () => {
+    await validateUser(user);
+    setFormErrors({ name: null, organization: null, token: null });
+    UserSessionService.set(user);
+    setIsLogging(true);
+    await getProjects(user.organization);
+    onLogin(user, user.remember);
+  };
+
+  const handleErrorLogin = (error: { errors: ErrorList, fields: Record<string, ErrorList> }) => {
+    UserSessionService.set(null);
+    if (error.errors && error.fields) {
+      setFormErrors(formatFormErrors(error.errors));
+    } else {
+      useSnackbar('Failed on login', 'error');
     }
   };
 
   return (
     <ContainerStyled>
-      <LoginForm onSubmit={onClickLogin}>
+      <LoginForm onSubmit={onSubmitLogin}>
         <UserFormComponent
           formErrors={formErrors}
           user={user}

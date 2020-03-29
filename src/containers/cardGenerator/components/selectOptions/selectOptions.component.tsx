@@ -4,7 +4,7 @@ import { Loading, LoadingKeys, Project, Sprint, Team, WorkItem } from '../../vie
 import { SelectContainer, } from './selectOptions.component.styles';
 import { SelectProjectComponent, SelectTeamComponent, SelectSprintComponent } from './components';
 import { isNumber } from 'common/utils';
-import { path, pathOr } from 'ramda';
+import { pathOr } from 'ramda';
 import { Button } from '@material-ui/core';
 
 interface Props {
@@ -35,7 +35,7 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
 
   React.useEffect(() => {
     setSelectedSprint('');
-    props.onChangeWorkItems(null)
+    props.onChangeWorkItems(null);
   }, [selectedTeam]);
 
   const onChangeIsLoading = React.useCallback((key: LoadingKeys) => ((value: boolean) =>

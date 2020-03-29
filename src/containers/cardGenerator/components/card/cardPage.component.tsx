@@ -11,11 +11,12 @@ interface Props {
 }
 
 export const CardPageComponent: React.FunctionComponent<Props> = ({ workItems, filters, teamName }) => {
-  const filteredWorkItems = filterWorkItems(workItems, filters);
+  const filteredWorkItems: WorkItem[][] = filterWorkItems(workItems, filters);
   return (
     <>
       {
-        Array.isArray(filteredWorkItems) && filterWorkItems(workItems, filters).map(renderCardPage(teamName))
+        Array.isArray(filteredWorkItems) &&
+        filterWorkItems(workItems, filters).map(renderCardPage(teamName))
       }
     </>
   )

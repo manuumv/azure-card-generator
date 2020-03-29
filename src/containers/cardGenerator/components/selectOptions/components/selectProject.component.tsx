@@ -30,12 +30,13 @@ export const SelectProjectComponent: React.FunctionComponent<Props> = (props) =>
       props.changeIsLoading(true);
       const projects = await getProjects(organization);
       props.onChangeProject(mapProjectsApiModelToVM(projects));
-      props.changeIsLoading(false);
     } catch (error) {
-      useSnackbar(error.message, 'error');
+      useSnackbar(error, 'error');
+    } finally {
       props.changeIsLoading(false);
     }
   }
+
   const onChangeProject = async (value: string | number) => {
     props.setSelectedProject(value);
     if (isNumber) {
@@ -43,10 +44,10 @@ export const SelectProjectComponent: React.FunctionComponent<Props> = (props) =>
         props.changeIsLoading(true);
         const teams = await getTeams(organization, props.projects[value].name);
         props.onChangeTeam(mapTeamsApiModelToVM(teams))
-        props.changeIsLoading(false);
       } catch (error) {
+        useSnackbar(error, 'error');
+      } finally {
         props.changeIsLoading(false);
-        useSnackbar(error, error);
       }
     }
   }
