@@ -1,5 +1,5 @@
-import * as ApiModel from "api/model";
-import * as ViewModel from "../../viewmodel";
+import * as ApiModel from 'api/model';
+import * as ViewModel from '../../viewmodel';
 
 export const mapWorkItemsApiModelToVM = (workItems: ApiModel.WorkItemCollection): ViewModel.WorkItem[] => (
   workItems && Array.isArray(workItems.value) ?
@@ -12,10 +12,10 @@ export const mapWorkItemApiModelToVM = (workItem: ApiModel.WorkItem): ViewModel.
     {
       id: workItem.id,
       url: workItem.url,
-      type: mapWorkItemTypeApiModelToVM(workItem.fields["System.WorkItemType"]),
-      title: workItem.fields && workItem.fields["System.Title"],
-      state: workItem.fields && workItem.fields["System.State"],
-      effort: workItem.fields && workItem.fields["Microsoft.VSTS.Scheduling.Effort"]
+      type: mapWorkItemTypeApiModelToVM(workItem.fields['System.WorkItemType']),
+      title: workItem.fields && workItem.fields['System.Title'],
+      state: workItem.fields && workItem.fields['System.State'],
+      effort: workItem.fields && workItem.fields['Microsoft.VSTS.Scheduling.Effort']
     } :
     null
 )
@@ -26,7 +26,7 @@ export const mapWorkItemTypeApiModelToVM = (type: string): ViewModel.WorkItemTyp
       return 'TASK';
     case 'BUG':
       return 'BUG';
-    case "PRODUCT BACKLOG ITEM":
+    case 'PRODUCT BACKLOG ITEM':
       return 'PRODUCT BACKLOG ITEM';
     default:
       return '';

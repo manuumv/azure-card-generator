@@ -1,5 +1,5 @@
-import * as ApiModel from "api/model";
-import * as ViewModel from "../../viewmodel";
+import * as ApiModel from 'api/model';
+import * as ViewModel from '../../viewmodel';
 
 export const mapTeamsApiModelToVM = (teams: ApiModel.TeamCollection): ViewModel.Team[] => (
   teams && Array.isArray(teams.value) ?

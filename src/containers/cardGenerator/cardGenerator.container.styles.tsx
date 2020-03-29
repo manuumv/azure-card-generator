@@ -1,17 +1,7 @@
-import { styled, FormGroup } from "@material-ui/core";
+import { styled } from '@material-ui/core';
 
-export const CardPage = styled('div')({
+export const OptionsContainer = styled('div')({
   display: 'flex',
-  flexDirection: 'row',
-  maxHeight: '100vh',
-  flexWrap: 'wrap',
-  justifyContent: 'space-between',
-  padding: '15px',
-  pageBreakAfter: 'always',
-})
-
-export const SelectContainer = styled(FormGroup)({
-  display: 'flex',
-  flexDirection: 'row',
-  marginTop: '10px',
+  flexDirection: 'column',
+  marginLeft: '20px',
 })

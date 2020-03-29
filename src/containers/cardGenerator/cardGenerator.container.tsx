@@ -1,16 +1,17 @@
-import * as React from "react";
-import { Container } from "@material-ui/core";
-import { SpinnerComponent } from "common/components/spinner";
-import { filterStates } from "./cardGenerator.container.business";
-import { FilterComponent, SelectOptionsComponent, TopBarComponent, CardPageComponent } from "./components";
-import { Loading, Project, Sprint, Team, WorkItem, LoadingKeys } from "./viewmodel";
+import * as React from 'react';
+import { Container } from '@material-ui/core';
+import { SpinnerComponent } from 'common/components/spinner';
+import { filterStates } from './cardGenerator.container.business';
+import { FilterComponent, SelectOptionsComponent, TopBarComponent, CardPageComponent } from './components';
+import { Loading, Project, Sprint, Team, WorkItem, LoadingKeys } from './viewmodel';
+import { OptionsContainer } from './cardGenerator.container.styles';
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [projects, setProjects] = React.useState<Project[]>();
   const [teams, setTeams] = React.useState<Team[]>();
   const [sprints, setSprints] = React.useState<Sprint[]>();
   const [workItems, setWorkItems] = React.useState<WorkItem[]>();
-  const [teamName, setTeamName] = React.useState<string>("");
+  const [teamName, setTeamName] = React.useState<string>('');
   const [filters, setFilters] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState<Loading>({
     projects: false,
@@ -45,7 +46,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   return (
     <>
       <TopBarComponent />
-      <Container>
+      <OptionsContainer>
         <SelectOptionsComponent
           teams={teams}
           sprints={sprints}
@@ -64,7 +65,9 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
           filters={filters}
           handleChangeFilters={handleChangeFilters}
         />
-        <SpinnerComponent isLoading={isLoading.workItems}>
+      </OptionsContainer>
+      <SpinnerComponent isLoading={isLoading.workItems}>
+        <Container>
           <div ref={componentToPrintRef}>
             <CardPageComponent
               workItems={workItems}
@@ -72,8 +75,8 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
               filters={filters}
             />
           </div>
-        </SpinnerComponent>
-      </Container>
+        </Container>
+      </SpinnerComponent>
     </>
   );
 };

@@ -1,7 +1,7 @@
-import { Card, CardContent, styled, Typography } from "@material-ui/core";
-import { cardColors } from "styles";
-import { WorkItemType } from "../../../viewmodel";
-import { getCardBackgroundColor } from "./card.component.business";
+import { Card, CardContent, styled, Typography } from '@material-ui/core';
+import { cardColors } from 'styles';
+import { WorkItemType } from '../../../viewmodel';
+import { getCardBackgroundColor } from './card.component.business';
 
 export const CardContainer = styled(Card)({
   width: '45%',

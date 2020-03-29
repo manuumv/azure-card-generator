@@ -14,3 +14,8 @@ export const loginColors = {
   boxShadow1: 'rgba(0,0,0,0.19)',
   boxShadow2: 'rgba(0,0,0,0.23)',
 };
+
+
+export const appBarColors = {
+  background: 'rgb(60, 56, 56)',
+};

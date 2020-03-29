@@ -13,7 +13,7 @@ export const TopBarComponent: React.FunctionComponent = () => {
   return (
     <HeaderBar position="relative">
       <Toolbar>
-        <Title variant="h4">AZURE CARD GENERATOR</Title>
+        <Title variant="h1">AZURE CARD GENERATOR</Title>
         <UserName>{username}</UserName>
         <Button onClick={onLogout} variant="outlined" color="inherit">Logout</Button>
       </Toolbar>

@@ -1,4 +1,4 @@
-import { styled, FormGroup } from "@material-ui/core";
+import { styled, FormGroup } from '@material-ui/core';
 
 export const SelectContainer = styled(FormGroup)({
   display: 'flex',

@@ -1,6 +1,6 @@
 import * as mappers from './mapWorkItemRelationsApiToVM';
-import * as ApiModel from "api/model";
-import * as ViewModel from "../../viewmodel";
+import * as ApiModel from 'api/model';
+import * as ViewModel from '../../viewmodel';
 
 describe('mapWorkItemRelationsApiModelToVM', () => {
   describe('mapWorkItemRelationsApiModelToVM', () => {

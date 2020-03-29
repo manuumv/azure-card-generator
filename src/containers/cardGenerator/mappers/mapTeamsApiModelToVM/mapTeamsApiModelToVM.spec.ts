@@ -1,6 +1,6 @@
 import * as mappers from './mapTeamsApiModelToVM';
-import * as ApiModel from "api/model";
-import * as ViewModel from "../../viewmodel";
+import * as ApiModel from 'api/model';
+import * as ViewModel from '../../viewmodel';
 
 describe('mapTeamsApiModelToVM', () => {
   describe('mapTeamsApiModelToVM', () => {

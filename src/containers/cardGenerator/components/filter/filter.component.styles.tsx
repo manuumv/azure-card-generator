@@ -1,4 +1,4 @@
-import { styled, InputLabel, Input } from "@material-ui/core";
+import { styled, InputLabel, Input } from '@material-ui/core';
 
 export const Label = styled(InputLabel)({
   width: '250px',

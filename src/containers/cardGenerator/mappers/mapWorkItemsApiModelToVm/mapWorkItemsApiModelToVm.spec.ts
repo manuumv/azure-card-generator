@@ -1,6 +1,6 @@
 import * as mappers from './mapWorkItemsApiModelToVm';
-import * as ApiModel from "api/model";
-import * as ViewModel from "../../viewmodel";
+import * as ApiModel from 'api/model';
+import * as ViewModel from '../../viewmodel';
 
 describe('mapWorkItemsApiModelToVM', () => {
   describe('mapWorkItemsApiModelToVM', () => {
@@ -53,12 +53,12 @@ describe('mapWorkItemsApiModelToVM', () => {
 
     it('should return the expected WorkItem object', () => {
       // Arrange
-      const mockedWorkItem = { id: 1, fields: { "System.WorkItemType": 'PRODUCT BACKLOG ITEM' } } as ApiModel.WorkItem;
+      const mockedWorkItem = { id: 1, fields: { 'System.WorkItemType': 'PRODUCT BACKLOG ITEM' } } as ApiModel.WorkItem;
       const expectedResult: ViewModel.WorkItem = {
         id: mockedWorkItem.id,
-        effort: mockedWorkItem.fields["Microsoft.VSTS.Scheduling.Effort"],
-        state: mockedWorkItem.fields["System.State"],
-        title: mockedWorkItem.fields["System.Title"],
+        effort: mockedWorkItem.fields['Microsoft.VSTS.Scheduling.Effort'],
+        state: mockedWorkItem.fields['System.State'],
+        title: mockedWorkItem.fields['System.Title'],
         type: 'PRODUCT BACKLOG ITEM',
         url: mockedWorkItem.url
       };
@@ -70,7 +70,7 @@ describe('mapWorkItemsApiModelToVM', () => {
 
       // Assert
       expect(result).toEqual(expectedResult);
-      expect(spyMapWorkItemTypeApiModelToVM).toHaveBeenCalledWith(mockedWorkItem.fields["System.WorkItemType"]);
+      expect(spyMapWorkItemTypeApiModelToVM).toHaveBeenCalledWith(mockedWorkItem.fields['System.WorkItemType']);
     })
   })
 

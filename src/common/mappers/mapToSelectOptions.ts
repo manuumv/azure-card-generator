@@ -1,4 +1,4 @@
-import { SelectValue } from "../entities"
+import { SelectValue } from '../entities';
 
 export const mapToSelectOptions = <T>(values: T[], keyName: string, ): SelectValue[] => (
   Array.isArray(values) ?

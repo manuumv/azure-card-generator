@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Switch, Route, HashRouter } from "react-router-dom";
-import { LoginContainer } from "./containers/login/login.container";
-import { CardGeneratorContainer } from "./containers/cardGenerator/cardGenerator.container";
-import { LoginContext } from "./common/providers";
+import * as React from 'react';
+import { Switch, Route, HashRouter } from 'react-router-dom';
+import { LoginContainer } from './containers/login/login.container';
+import { CardGeneratorContainer } from './containers/cardGenerator/cardGenerator.container';
+import { LoginContext } from './common/providers';
 
 export const AppRouter: React.FunctionComponent = () => {
   const { user } = React.useContext(LoginContext);

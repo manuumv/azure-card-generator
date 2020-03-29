@@ -1,5 +1,5 @@
-import { WorkItem } from "../../viewmodel";
-import { splitEvery } from "ramda";
+import { WorkItem } from '../../viewmodel';
+import { splitEvery } from 'ramda';
 
 export const filterWorkItems = (workItems: WorkItem[], filters: string[]): WorkItem[][] => {
   const isArrayWorkItems = Array.isArray(workItems);

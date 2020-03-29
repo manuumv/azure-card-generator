@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 import { Snackbar } from '@material-ui/core';
 import { Alert, Color } from '@material-ui/lab';
-import { snackBackAnchorOrigin, autoHideDuration, elevation } from "./constants";
+import { snackBackAnchorOrigin, autoHideDuration, elevation } from './constants';
 
 interface SnackbarContext {
   useSnackbar: (message: string, severity: Color) => void;

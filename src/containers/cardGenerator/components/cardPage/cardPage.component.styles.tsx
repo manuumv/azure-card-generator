@@ -1,4 +1,4 @@
-import { styled } from "@material-ui/core";
+import { styled } from '@material-ui/core';
 
 export const CardPage = styled('div')({
   display: 'flex',
