@@ -1,13 +1,33 @@
-sudo: required
-services:
-  - docker
-script:
-  - docker build --force-rm --target=test -t azure-card-generator .
-  - docker run --rm azure-card-generator npm test
-  - docker build --force-rm -t azure-card-generator .
-after_success:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-  - docker tag azure-card-generator  $DOCKER_USER/azure-card-generator:$TRAVIS_BUILD_NUMBER
-  - docker push $DOCKER_USER/azure-card-generator:$TRAVIS_BUILD_NUMBER
-  - docker tag azure-card-generator  $DOCKER_USER/azure-card-generator:latest
-  - docker push $DOCKER_USER/azure-card-generator:latest
+jobs:
+  include:
+    - stage: docker test, build and push to docker hub
+      ## Tests
+      before_script:
+        - docker build --force-rm --target=test -t azure-card-generator .
+        - docker run --rm azure-card-generator npm test
+      ## Build
+      script:
+        - docker build --force-rm -t azure-card-generator .
+      ## Push image to docker hub
+      after_success:
+          - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          - docker tag azure-card-generator  $DOCKER_USER/azure-card-generator:$TRAVIS_BUILD_NUMBER
+          - docker push $DOCKER_USER/azure-card-generator:$TRAVIS_BUILD_NUMBER
+          - docker tag azure-card-generator  $DOCKER_USER/azure-card-generator:latest
+          - docker push $DOCKER_USER/azure-card-generator:latest
+    - stage: deploy to gh-pages
+      language: node_js
+      node_js: "stable"
+      script:
+        - npm run test
+        - npm run build:prod
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        keep_history: false
+        local_dir: ./dist
+        on:
+          branch: master
+
+          sudo: required

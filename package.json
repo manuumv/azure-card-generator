@@ -1,8 +1,9 @@
 {
-  "name": "react-app",
+  "name": "azure-card-generator",
   "version": "1.0.0",
-  "description": "react app template",
+  "description": "azure card generator",
   "main": "index.js",
+  "homepage": "http://manuumv.github.io/azure-card-generator",
   "scripts": {
     "start": "npm run start:dev",
     "start:dev": "webpack-dev-server --mode development --config ./config/webpack/webpack.dev.js",
@@ -13,8 +14,19 @@
     "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Manuel Millán",
+    "email": "manu.millan.v@gmail.com",
+    "url": "https://github.com/manuumv"
+  },
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manuumv/azure-card-generator"
+  },
+  "bugs": {
+    "url": "https://github.com/manuumv/azure-card-generator/issues"
+  },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
     "@material-ui/core": "^4.9.8",
