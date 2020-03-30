@@ -1,0 +1,13 @@
+sudo: required
+services:
+  - docker
+script:
+  - docker build --force-rm --target=test -t azure-card-generator .
+  - docker run --rm azure-card-generator npm test
+  - docker build --force-rm -t azure-card-generator .
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - docker tag azure-card-generator  $DOCKER_USER/azure-card-generator:$TRAVIS_BUILD_NUMBER
+  - docker push $DOCKER_USER/azure-card-generator:$TRAVIS_BUILD_NUMBER
+  - docker tag azure-card-generator  $DOCKER_USER/azure-card-generator:latest
+  - docker push $DOCKER_USER/azure-card-generator:latest

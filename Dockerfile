@@ -1,15 +1,28 @@
-# Builder
-FROM node:12.16.1-alpine AS builder
+# Test
+FROM node:12.16.1-alpine AS test
 COPY / ./app
+WORKDIR /app
+
+RUN npm install
+
+CMD ["npm", "test"]
+
+# ---------- Builder ----------
+FROM node:12.16.1-alpine as builder
+
+# Copy files
+COPY --from=test /app ./app
 WORKDIR /app
 
 RUN npm install && npm run build:prod
 
-# Build
+# ---------- End Builder ----------
 FROM node:12.16.1-alpine
-COPY --from=builder /app/dist ./app/dist
 
+# Copy files
+COPY --from=builder /app/dist ./app/dist
 WORKDIR /app
+
 COPY server/index.js ./
 COPY server/package.json ./
 
