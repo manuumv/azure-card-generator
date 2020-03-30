@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { WorkItem } from '../../../viewmodel';
-import { CardContainer, getTypeComponent, Description, Effort, TeamName, FooterContainer, CardBody, Title, HeaderContainer } from './card.component.styles';
+import { CardContainer, Description, Effort, TeamName, FooterContainer, CardBody, Title, HeaderContainer, Type } from './card.component.styles';
 import { Divider } from '@material-ui/core';
+import { getCardBackgroundColor } from './card.component.business';
 
 interface Props {
   teamName: string;
@@ -10,12 +11,12 @@ interface Props {
 
 export const CardComponent: React.FunctionComponent<Props> = ({ teamName, workItem }) => {
 
-  const Type = getTypeComponent(workItem.type);
+  const backgroundColor = getCardBackgroundColor(workItem.type);
 
   return (
     <CardContainer>
       <HeaderContainer>
-        <Type>{workItem.type}</Type>
+        <Type style={{ backgroundColor }}>{workItem.type}</Type>
         <Title>{workItem.id}</Title>
       </HeaderContainer>
       <Divider />

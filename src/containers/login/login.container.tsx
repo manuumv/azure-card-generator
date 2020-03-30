@@ -59,7 +59,7 @@ export const LoginContainer: React.FunctionComponent = () => {
           user={user}
           onChangeUser={onChangeUser}
         />
-        <SpinnerComponent isLoading={isLogging}>
+        <SpinnerComponent isLoading={isLogging} fullWidth={true}>
           <LoginButton disabled={isLogging} variant="contained" type="submit">Login</LoginButton>
         </SpinnerComponent>
       </LoginForm>

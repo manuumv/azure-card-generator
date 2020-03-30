@@ -1,7 +1,5 @@
 import { Card, CardContent, styled, Typography } from '@material-ui/core';
 import { cardColors } from 'styles';
-import { WorkItemType } from '../../../viewmodel';
-import { getCardBackgroundColor } from './card.component.business';
 
 export const CardContainer = styled(Card)({
   width: '45%',
@@ -28,11 +26,10 @@ export const Title = styled(Typography)({
   padding: '0.2vh 0',
 });
 
-export const getTypeComponent = (workItemType: WorkItemType) => styled(Typography)({
+export const Type = styled(Typography)({
   width: '70%',
   textAlign: 'center',
   padding: '0.2vh 0',
-  backgroundColor: getCardBackgroundColor(workItemType),
 });
 
 export const Description = styled(Typography)({

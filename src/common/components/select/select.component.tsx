@@ -19,6 +19,7 @@ export const SelectComponent: React.FunctionComponent<Props> = ({ selectedValue,
   }
 
   const isDisabled = !values || values && values.length === 0 ? true : disabled;
+  const value = isDisabled ? '' : selectedValue;
 
   return (
     <FormControlContainer disabled={isDisabled}>
@@ -26,7 +27,7 @@ export const SelectComponent: React.FunctionComponent<Props> = ({ selectedValue,
       <Select
         labelId={`label-${id}`}
         id={id}
-        value={selectedValue}
+        value={value}
         onChange={onChangeSelect}
         displayEmpty
       >

@@ -38,19 +38,23 @@ export const SelectProjectComponent: React.FunctionComponent<Props> = (props) =>
   }
 
   const onChangeProject = async (value: string | number) => {
-    props.setSelectedProject(value);
-    if (isNumber) {
-      try {
-        props.changeIsLoading(true);
-        const teams = await getTeams(organization, props.projects[value].name);
-        props.onChangeTeam(mapTeamsApiModelToVM(teams))
-      } catch (error) {
-        useSnackbar(error.message, 'error');
-      } finally {
-        props.changeIsLoading(false);
+    try {
+      props.setSelectedProject(value);
+      if (!isNumber(value)) {
+        props.onChangeTeam([]);
+        return;
       }
+
+      props.changeIsLoading(true);
+      const teams = await getTeams(organization, props.projects[value].name);
+      props.onChangeTeam(mapTeamsApiModelToVM(teams))
+    } catch (error) {
+      useSnackbar(error.message, 'error');
+    } finally {
+      props.changeIsLoading(false);
     }
   }
+
 
   return (
     <SpinnerComponent isLoading={props.isLoading}>

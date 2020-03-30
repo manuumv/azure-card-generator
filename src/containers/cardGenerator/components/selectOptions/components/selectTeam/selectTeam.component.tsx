@@ -28,7 +28,7 @@ export const SelectTeamComponent: React.FunctionComponent<Props> = (props) => {
         props.changeIsLoading(true);
         const organization = UserSessionService.get()?.organization;
         const sprints = await getSprints(organization, props.projectName, props.teams[value].id);
-        props.onChangeSprint(mapSprintsApiModelToVM(sprints), props.projectName);
+        props.onChangeSprint(mapSprintsApiModelToVM(sprints), props.teams[value].name);
       } catch (error) {
         useSnackbar(error.message, 'error');
       } finally {
