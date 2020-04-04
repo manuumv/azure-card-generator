@@ -10,42 +10,41 @@ import { SnackbarContext } from 'common/providers';
 
 interface Props {
   teams: Team[];
-  isLoading: boolean;
   selectedTeam: string | number;
   projectName: string;
   setSelectedTeam: (value: string | number) => void;
-  onChangeSprint: (sprints: Sprint[], teamName: string) => void,
-  changeIsLoading: (value: boolean) => void;
+  onChangeSprint: (sprints: Sprint[], teamName: string) => void;
 }
 
 export const SelectTeamComponent: React.FunctionComponent<Props> = (props) => {
   const { useSnackbar } = React.useContext(SnackbarContext);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const onChangeTeam = async (value: string | number) => {
     props.setSelectedTeam(value);
     if (isNumber(value)) {
       try {
-        props.changeIsLoading(true);
+        setIsLoading(true);
         const organization = UserSessionService.get()?.organization;
         const sprints = await getSprints(organization, props.projectName, props.teams[value].id);
         props.onChangeSprint(mapSprintsApiModelToVM(sprints), props.teams[value].name);
       } catch (error) {
         useSnackbar(error.message, 'error');
       } finally {
-        props.changeIsLoading(false);
+        setIsLoading(false);
       }
     }
   }
 
   return (
-    <SpinnerComponent isLoading={props.isLoading}>
+    <SpinnerComponent isLoading={isLoading}>
       <SelectComponent
         id="teams"
         label="Teams:"
         values={mapToSelectOptions<Team>(props.teams, 'name')}
         selectedValue={props.selectedTeam}
         onChangeOption={onChangeTeam}
-        disabled={props.isLoading}
+        disabled={isLoading}
       />
     </SpinnerComponent>
   )

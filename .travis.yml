@@ -1,3 +1,9 @@
+branches:
+  only:
+  - master
+
+services: docker
+
 jobs:
   include:
     - stage: docker test, build and push to docker hub
@@ -29,5 +35,4 @@ jobs:
         local_dir: ./dist
         on:
           branch: master
-
           sudo: required
