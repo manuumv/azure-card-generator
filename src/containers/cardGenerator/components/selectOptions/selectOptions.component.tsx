@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactToPrint from 'react-to-print';
-import { Loading, LoadingKeys, Project, Sprint, Team, WorkItem } from '../../viewmodel';
+import { Project, Sprint, Team, WorkItem } from '../../viewmodel';
 import { SelectContainer, } from './selectOptions.component.styles';
 import { SelectProjectComponent, SelectTeamComponent, SelectSprintComponent } from './components';
 import { isNumber } from 'common/utils';
@@ -11,14 +11,12 @@ interface Props {
   teams: Team[];
   projects: Project[];
   sprints: Sprint[];
-  isLoading: Loading;
   isDisabledPrintButton: boolean;
   onChangeProject: (projects: Project[]) => void;
   onChangeTeam: (team: Team[]) => void;
   onChangeSprint: (sprints: Sprint[], teamName: string) => void;
   onChangeWorkItems: (workItems: WorkItem[]) => void;
   componentToPrintRef: React.MutableRefObject<undefined>;
-  changeIsLoading: (key: LoadingKeys, value: boolean) => void;
 }
 
 export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) => {
@@ -38,10 +36,6 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
     props.onChangeWorkItems(null);
   }, [selectedTeam]);
 
-  const onChangeIsLoading = React.useCallback((key: LoadingKeys) => ((value: boolean) =>
-    props.changeIsLoading(key, value)
-  ), [props.isLoading]);
-
   const projectName = isNumber(selectedProject) ? props.projects[selectedProject].name : '';
   const teamId = pathOr('', [selectedTeam, 'id'], props.teams);
   const reactToPrintContent = () => props.componentToPrintRef.current;
@@ -54,8 +48,6 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
         projects={props.projects}
         onChangeProject={props.onChangeProject}
         onChangeTeam={props.onChangeTeam}
-        isLoading={props.isLoading.projects}
-        changeIsLoading={onChangeIsLoading('projects')}
       />
       <SelectTeamComponent
         teams={props.teams}
@@ -63,8 +55,6 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
         selectedTeam={selectedTeam}
         setSelectedTeam={setSelectedTeam}
         projectName={projectName}
-        isLoading={props.isLoading.teams}
-        changeIsLoading={onChangeIsLoading('teams')}
       />
       <SelectSprintComponent
         onChangeWorkItems={props.onChangeWorkItems}
@@ -73,8 +63,6 @@ export const SelectOptionsComponent: React.FunctionComponent<Props> = (props) =>
         sprints={props.sprints}
         projectName={projectName}
         teamId={teamId}
-        isLoading={props.isLoading.teams}
-        changeIsLoading={onChangeIsLoading('sprints')}
       />
       <ReactToPrint
         trigger={reactToPrintTrigger(props.isDisabledPrintButton)}

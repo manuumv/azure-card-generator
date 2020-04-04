@@ -10,16 +10,15 @@ import { SnackbarContext } from 'common/providers';
 
 interface Props {
   projects: Project[];
-  isLoading: boolean;
   selectedProject: string | number;
   setSelectedProject: (value: string | number) => void;
   onChangeProject: (projects: Project[]) => void;
   onChangeTeam: (teams: Team[]) => void;
-  changeIsLoading: (value: boolean) => void;
 }
 
 export const SelectProjectComponent: React.FunctionComponent<Props> = (props) => {
   const { useSnackbar } = React.useContext(SnackbarContext);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const organization = UserSessionService.get()?.organization;
 
@@ -27,13 +26,13 @@ export const SelectProjectComponent: React.FunctionComponent<Props> = (props) =>
 
   const loadProjects = async () => {
     try {
-      props.changeIsLoading(true);
+      setIsLoading(true);
       const projects = await getProjects(organization);
       props.onChangeProject(mapProjectsApiModelToVM(projects));
     } catch (error) {
       useSnackbar(error.message, 'error');
     } finally {
-      props.changeIsLoading(false);
+      setIsLoading(false);
     }
   }
 
@@ -45,26 +44,26 @@ export const SelectProjectComponent: React.FunctionComponent<Props> = (props) =>
         return;
       }
 
-      props.changeIsLoading(true);
+      setIsLoading(true);
       const teams = await getTeams(organization, props.projects[value].name);
       props.onChangeTeam(mapTeamsApiModelToVM(teams))
     } catch (error) {
       useSnackbar(error.message, 'error');
     } finally {
-      props.changeIsLoading(false);
+      setIsLoading(false);
     }
   }
 
 
   return (
-    <SpinnerComponent isLoading={props.isLoading}>
+    <SpinnerComponent isLoading={isLoading}>
       <SelectComponent
         id="projects"
         label="Projects:"
         values={mapToSelectOptions<Project>(props.projects, 'name')}
         selectedValue={props.selectedProject}
         onChangeOption={onChangeProject}
-        disabled={props.isLoading}
+        disabled={isLoading}
       />
     </SpinnerComponent>
   )

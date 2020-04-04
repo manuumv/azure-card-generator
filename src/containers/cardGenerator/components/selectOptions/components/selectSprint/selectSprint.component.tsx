@@ -11,23 +11,22 @@ import { handleEmptyWorkItemIds } from './selectSprint.component.business';
 
 interface Props {
   sprints: Sprint[];
-  isLoading: boolean;
   selectedSprint: string | number;
   projectName: string;
   teamId: string;
   setSelectedSprint: (value: string | number) => void;
-  onChangeWorkItems: (workItems: WorkItem[]) => void,
-  changeIsLoading: (value: boolean) => void;
+  onChangeWorkItems: (workItems: WorkItem[]) => void;
 }
 
 export const SelectSprintComponent: React.FunctionComponent<Props> = (props) => {
   const { useSnackbar } = React.useContext(SnackbarContext);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const onChangeSprint = async (value: string | number) => {
     props.setSelectedSprint(value);
     if (isNumber(value)) {
       try {
-        props.changeIsLoading(true);
+        setIsLoading(true);
         const organization = UserSessionService.get()?.organization;
         const workItemRelations = await getWorkItemRelations(organization, props.projectName, props.teamId, props.sprints[value].id);
         const workItemIds = mapWorkItemRelationsApiModelToVM(workItemRelations);
@@ -38,20 +37,20 @@ export const SelectSprintComponent: React.FunctionComponent<Props> = (props) => 
         props.onChangeWorkItems([]);
         useSnackbar(error.message, 'error');
       } finally {
-        props.changeIsLoading(false);
+        setIsLoading(false);
       }
     }
   }
 
   return (
-    <SpinnerComponent isLoading={props.isLoading}>
+    <SpinnerComponent isLoading={isLoading}>
       <SelectComponent
         id="sprints"
         label="Sprints:"
         values={mapToSelectOptions<Sprint>(props.sprints, 'name')}
         selectedValue={props.selectedSprint}
         onChangeOption={onChangeSprint}
-        disabled={props.isLoading}
+        disabled={isLoading}
       />
     </SpinnerComponent>
   )

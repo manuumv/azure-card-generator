@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Container } from '@material-ui/core';
-import { SpinnerComponent } from 'common/components/spinner';
 import { filterStates } from './cardGenerator.container.business';
 import { FilterComponent, SelectOptionsComponent, TopBarComponent, CardPageComponent } from './components';
-import { Loading, Project, Sprint, Team, WorkItem, LoadingKeys } from './viewmodel';
+import { Project, Sprint, Team, WorkItem } from './viewmodel';
 import { OptionsContainer } from './cardGenerator.container.styles';
 
 export const CardGeneratorContainer: React.FunctionComponent = () => {
@@ -13,12 +12,6 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   const [workItems, setWorkItems] = React.useState<WorkItem[]>();
   const [teamName, setTeamName] = React.useState<string>('');
   const [filters, setFilters] = React.useState<string[]>([]);
-  const [isLoading, setIsLoading] = React.useState<Loading>({
-    projects: false,
-    teams: false,
-    sprints: false,
-    workItems: false,
-  });
 
   const componentToPrintRef = React.useRef();
 
@@ -32,10 +25,6 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
   const handleChangeFilters = React.useCallback(({ target: { value } }: React.ChangeEvent<{ value: string[] }>) => {
     setFilters(value);
   }, [filters]);
-  const changeIsLoading = React.useCallback((textfield: LoadingKeys, value: boolean) => {
-    setIsLoading({ ...isLoading, [textfield]: value });
-  }, [isLoading]);
-
   const states = React.useMemo(() => {
     const filteredStates = filterStates(workItems);
     setFilters(filteredStates);
@@ -51,12 +40,10 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
           teams={teams}
           sprints={sprints}
           projects={projects}
-          isLoading={isLoading}
           onChangeProject={onChangeProject}
           onChangeTeam={onChangeTeam}
           onChangeSprint={onChangeSprint}
           onChangeWorkItems={onChangeWorkItems}
-          changeIsLoading={changeIsLoading}
           componentToPrintRef={componentToPrintRef}
           isDisabledPrintButton={isDisabledPrintButton}
         />
@@ -66,17 +53,15 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
           handleChangeFilters={handleChangeFilters}
         />
       </OptionsContainer>
-      <SpinnerComponent isLoading={isLoading.workItems}>
-        <Container>
-          <div ref={componentToPrintRef}>
-            <CardPageComponent
-              workItems={workItems}
-              teamName={teamName}
-              filters={filters}
-            />
-          </div>
-        </Container>
-      </SpinnerComponent>
+      <Container>
+        <div ref={componentToPrintRef}>
+          <CardPageComponent
+            workItems={workItems}
+            teamName={teamName}
+            filters={filters}
+          />
+        </div>
+      </Container>
     </>
   );
 };
