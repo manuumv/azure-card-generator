@@ -2,6 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { SelectComponent } from './select.component';
 import { SelectValue } from 'common/entities';
+import { InputLabel, Select, MenuItem } from '@material-ui/core';
 
 describe('Select Component', () => {
   it('should render the expected component if values are empty', () => {
@@ -17,8 +18,8 @@ describe('Select Component', () => {
     const component = shallow(
       <SelectComponent {...props} />
     );
-    const input = component.childAt(0);
-    const select = component.childAt(1);
+    const input = component.find(InputLabel);
+    const select = component.find(Select);
     const em = select.find('em');
 
     // Assert
@@ -47,10 +48,10 @@ describe('Select Component', () => {
     const component = shallow(
       <SelectComponent {...props} />
     );
-    const input = component.childAt(0);
-    const select = component.childAt(1);
-    const em = select.childAt(0);
-    const menuItem = select.childAt(1);
+    const input = component.find(InputLabel);
+    const select = component.find(Select);
+    const em = select.find('em');
+    const menuItem = select.find(MenuItem).last();
 
     // Assert
     expect(component.prop('disabled')).toBeFalsy();
