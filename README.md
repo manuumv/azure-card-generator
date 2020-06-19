@@ -33,3 +33,9 @@ run container
 ```
 docker run -p 9000:9000 azure-card-generator
 ```
+
+## Azure requirements
+
+* Email
+* Token
+* Organization

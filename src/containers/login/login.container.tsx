@@ -11,9 +11,9 @@ import { getProjects } from 'api/rest';
 import { ErrorList } from 'async-validator';
 
 export const LoginContainer: React.FunctionComponent = () => {
-  const [user, setUser] = React.useState<UserForm>({ name: '', organization: '', token: '', remember: false });
+  const [user, setUser] = React.useState<UserForm>({ email: '', organization: '', token: '', remember: false });
   const [isLogging, setIsLogging] = React.useState<boolean>(false);
-  const [formErrors, setFormErrors] = React.useState<UserFormErrors>({ name: null, organization: null, token: null });
+  const [formErrors, setFormErrors] = React.useState<UserFormErrors>({ email: null, organization: null, token: null });
 
   const { onLogin } = React.useContext(LoginContext);
   const { useSnackbar } = React.useContext(SnackbarContext)
@@ -26,20 +26,20 @@ export const LoginContainer: React.FunctionComponent = () => {
     try {
       event.preventDefault();
       await handleSuccessfulLogin();
+      setIsLogging(false);
+      onLogin(user, user.remember);
     } catch (error) {
       handleErrorLogin(error);
-    } finally {
       setIsLogging(false);
     }
   };
 
   const handleSuccessfulLogin = async () => {
     await validateUser(user);
-    setFormErrors({ name: null, organization: null, token: null });
+    setFormErrors({ email: null, organization: null, token: null });
     UserSessionService.set(user);
     setIsLogging(true);
     await getProjects(user.organization);
-    onLogin(user, user.remember);
   };
 
   const handleErrorLogin = (error: { errors: ErrorList, fields: Record<string, ErrorList> }) => {

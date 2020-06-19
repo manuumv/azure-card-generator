@@ -4,10 +4,10 @@ export interface UserForm extends User {
   remember: boolean;
 }
 
-export type UserFormKeys = 'name' | 'organization' | 'token' | 'remember';
+export type UserFormKeys = keyof UserForm;
 
 export interface UserFormErrors {
-  name: string,
+  email: string,
   token: string,
   organization: string,
 }

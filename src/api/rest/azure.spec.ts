@@ -1,5 +1,5 @@
 import { getSprints, getTeams, getWorkItemRelations, getWorkItems } from './azure';
-import * as httpHelper from 'common/utils/httpHelper';
+import * as httpHelper from 'common/utils/httpHelper/httpHelper';
 import * as endpoints from './endpoints';
 
 describe('cardGenerator services', () => {

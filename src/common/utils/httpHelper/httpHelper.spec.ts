@@ -11,7 +11,7 @@ describe('httpHelper', () => {
       const url = '/test';
       const requestInit: RequestInit = { headers };
       const expectedResult = { ok: true };
-      const user: User = { name: 'name', organization: 'organization', token: 'token' };
+      const user: User = { email: 'email', organization: 'organization', token: 'token' };
       const response: MockParams = {
         status: 200,
         statusText: 'Accepted',
@@ -40,7 +40,7 @@ describe('httpHelper', () => {
       const requestInit: RequestInit = { headers };
       const spyRequest = jest.spyOn(httpHelper, 'request');
       const spyGetRequestInitWithAuthorization = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization').mockReturnValue(requestInit);
-      const mockedUser: User = { name: 'name', organization: 'organization', token: 'token' };
+      const mockedUser: User = { email: 'email', organization: 'organization', token: 'token' };
       const spyUserSessionServiceGet = jest.spyOn(UserSessionService, 'get').mockReturnValue(mockedUser);
       const expectedResult = new Error('error');
       fetchMock.mockReject(expectedResult);
@@ -67,7 +67,7 @@ describe('httpHelper', () => {
       const requestInit: RequestInit = { headers, method: 'GET' };
       const spyGetRequestInitWithAuthorization = jest.spyOn(httpHelper, 'getRequestInitWithAuthorization').mockReturnValue(requestInit);
       const spyRequest = jest.spyOn(httpHelper, 'request');
-      const mockedUser: User = { name: 'name', organization: 'organization', token: 'token' };
+      const mockedUser: User = { email: 'email', organization: 'organization', token: 'token' };
       const spyUserSessionServiceGet = jest.spyOn(UserSessionService, 'get').mockReturnValue(mockedUser);
       fetchMock.mockResponse(okResponse);
 

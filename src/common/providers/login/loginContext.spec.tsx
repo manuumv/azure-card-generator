@@ -32,7 +32,7 @@ describe('LoginContext', () => {
       // Assert
       const spyUserSessionServiceGet = jest.spyOn(UserSessionService, 'get');
       const spyUserSessionServiceSave = jest.spyOn(UserSessionService, 'save');
-      const newUser: User = { name: 'test', organization: 'test', token: '' };
+      const newUser: User = { email: 'test', organization: 'test', token: '' };
       const rememberLogin = false;
       const expectedResult = JSON.stringify(newUser);
 
@@ -65,7 +65,7 @@ describe('LoginContext', () => {
       // Assert
       const spyUserSessionServiceGet = jest.spyOn(UserSessionService, 'get');
       const spyUserSessionServiceSave = jest.spyOn(UserSessionService, 'save');
-      const newUser: User = { name: 'test', organization: 'test', token: '' };
+      const newUser: User = { email: 'test', organization: 'test', token: '' };
       const rememberLogin = true;
       const expectedResult = JSON.stringify(newUser);
 

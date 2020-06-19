@@ -15,7 +15,7 @@ export const Title = styled(Typography)({
   }
 });
 
-export const UserName = styled(Typography)({
+export const UserEmail = styled(Typography)({
   marginRight: '10px',
   fontSize: '0.6rem',
   [`@media (min-width: ${resolutions.iphone4Landscape})`]: {

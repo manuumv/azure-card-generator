@@ -20,11 +20,11 @@ export const UserFormComponent: React.FunctionComponent<Props> = ({ user, formEr
   return (
     <>
       <Input
-        error={!!formErrors?.name}
-        helperText={formErrors?.name}
-        label="Name"
-        value={user.name}
-        onChange={onChange('name')}
+        error={!!formErrors?.email}
+        helperText={formErrors?.email}
+        label="email"
+        value={user.email}
+        onChange={onChange('email')}
       />
       <Input
         error={!!formErrors?.token}

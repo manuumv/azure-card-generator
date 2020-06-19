@@ -21,7 +21,7 @@ describe('userSession', () => {
 
     it('should call localStorage.getItem with the expected key and return the expected user', () => {
       // Arrange
-      const user: User = { name: '', organization: '', token: '' };
+      const user: User = { email: '', organization: '', token: '' };
       jest.spyOn(localStorage, 'getItem').mockReturnValue(JSON.stringify(user));
 
       // Act
@@ -45,7 +45,7 @@ describe('userSession', () => {
 
     it('should set the expected value', () => {
       // Arrange
-      const user: User = { name: 'test', organization: 'test', token: 'test' };
+      const user: User = { email: 'test', organization: 'test', token: 'test' };
 
       // Act
       userSession.UserSessionService.set(user);
@@ -67,7 +67,7 @@ describe('userSession', () => {
 
     it('should save the user in the localStorage and update the current user', () => {
       // Arrange
-      const user: User = { name: 'test1', organization: 'test1', token: 'test1' };
+      const user: User = { email: 'test1', organization: 'test1', token: 'test1' };
 
       // Act
       userSession.UserSessionService.save(user);

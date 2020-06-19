@@ -19,7 +19,7 @@ export const getRequestInitWithAuthorization = (requestInit: RequestInit, user: 
       ...requestInit,
       headers: {
         ...requestInit.headers,
-        Authorization: `Basic ${btoa(`${user.name}:${user.token}`)}`,
+        Authorization: `Basic ${btoa(`${user.email}:${user.token}`)}`,
       }
     } :
     requestInit
