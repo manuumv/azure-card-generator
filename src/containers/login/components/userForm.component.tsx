@@ -22,7 +22,7 @@ export const UserFormComponent: React.FunctionComponent<Props> = ({ user, formEr
       <Input
         error={!!formErrors?.email}
         helperText={formErrors?.email}
-        label="email"
+        label="Email"
         value={user.email}
         onChange={onChange('email')}
       />

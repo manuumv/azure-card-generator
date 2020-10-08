@@ -15,14 +15,14 @@
     "baseUrl": "./src/",
     "outDir": "dist",
     "paths": {
-      "api": [
-        "./api"
+      "api/*": [
+        "./api/*"
       ],
-      "common": [
-        "./common"
+      "common/*": [
+        "./common/*"
       ],
-      "styles": [
-        "./styles"
+      "styles/*": [
+        "./styles/*"
       ],
     }
   },
