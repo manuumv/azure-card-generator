@@ -7,6 +7,23 @@ module.exports = merge(common, {
   output: {
     filename: '[name].[chunkhash].js',
   },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          chunks: 'initial',
+          name: 'vendor',
+          test: 'vendor',
+          enforce: true,
+        },
+      },
+    },
+  },
   plugins: [
     new CompressionPlugin({
       filename: '[path].gz[query]',
