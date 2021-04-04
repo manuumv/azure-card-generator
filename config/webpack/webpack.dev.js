@@ -9,6 +9,22 @@ module.exports = merge(common, {
   output: {
     filename: '[name].js',
   },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: ['react-refresh/babel'],
+            },
+          },
+        ],
+      },
+    ],
+  },
   devServer: {
     contentBase: './dist',
     host: 'localhost',

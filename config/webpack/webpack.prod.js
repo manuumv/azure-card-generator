@@ -7,6 +7,15 @@ module.exports = merge(common, {
   output: {
     filename: '[name].[chunkhash].js',
   },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+      },
+    ]
+  },
   performance: {
     hints: false,
     maxEntrypointSize: 512000,
