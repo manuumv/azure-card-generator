@@ -1,7 +1,7 @@
-import { ErrorList } from 'async-validator';
+import { ValidateError } from 'async-validator';
 import { UserFormErrors } from './viewmodel';
 
-export const formatFormErrors = (errors: ErrorList): UserFormErrors => {
+export const formatFormErrors = (errors: ValidateError[]): UserFormErrors => {
   let userFormErrors: UserFormErrors = { email: null, organization: null, token: null };
 
   if (!errors) {

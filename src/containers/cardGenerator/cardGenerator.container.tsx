@@ -17,7 +17,7 @@ export const CardGeneratorContainer: React.FunctionComponent = () => {
 
   const onChangeProject = React.useCallback(setProjects, [projects]);
   const onChangeTeam = React.useCallback(setTeams, [projects, teams]);
-  const onChangeSprint = React.useCallback((sprints: Sprint[], teamName: string) => {
+  const onChangeSprint = React.useCallback((sprints: Sprint[], teamName: string): void => {
     setTeamName(teamName);
     setSprints(sprints);
   }, [projects, teams, sprints, teamName]);

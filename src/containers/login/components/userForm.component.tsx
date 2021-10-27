@@ -11,11 +11,11 @@ interface Props {
 
 export const UserFormComponent: React.FunctionComponent<Props> = ({ user, formErrors, onChangeUser }) => {
 
-  const onChange = (key: UserFormKeys) => ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (key: UserFormKeys) => ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) : void => {
     onChangeUser(key, value)
   }
 
-  const onChangeRememberLogin = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => onChangeUser('remember', checked);
+  const onChangeRememberLogin = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => onChangeUser('remember', checked);
 
   return (
     <>

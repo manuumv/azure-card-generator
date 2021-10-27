@@ -8,7 +8,7 @@ import { UserSessionService } from 'common/services';
 import { validateUser } from './validations';
 import { formatFormErrors } from './login.container.business';
 import { getProjects } from 'api/rest';
-import { ErrorList } from 'async-validator';
+import { ValidateError } from 'async-validator';
 
 export const LoginContainer: React.FunctionComponent = () => {
   const [user, setUser] = React.useState<UserForm>({ email: '', organization: '', token: '', remember: false });
@@ -18,11 +18,11 @@ export const LoginContainer: React.FunctionComponent = () => {
   const { onLogin } = React.useContext(LoginContext);
   const { useSnackbar } = React.useContext(SnackbarContext)
 
-  const onChangeUser = React.useCallback((key: UserFormKeys, value: string | boolean) => (
+  const onChangeUser = React.useCallback((key: UserFormKeys, value: string | boolean): void => (
     setUser({ ...user, [key]: value })
   ), [user]);
 
-  const onSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitLogin = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     try {
       event.preventDefault();
       await handleSuccessfulLogin();
@@ -34,7 +34,7 @@ export const LoginContainer: React.FunctionComponent = () => {
     }
   };
 
-  const handleSuccessfulLogin = async () => {
+  const handleSuccessfulLogin = async (): Promise<void> => {
     await validateUser(user);
     setFormErrors({ email: null, organization: null, token: null });
     UserSessionService.set(user);
@@ -42,7 +42,7 @@ export const LoginContainer: React.FunctionComponent = () => {
     await getProjects(user.organization);
   };
 
-  const handleErrorLogin = (error: { errors: ErrorList, fields: Record<string, ErrorList> }) => {
+  const handleErrorLogin = (error: { errors: ValidateError[], fields: Record<string, ValidateError> }): void => {
     UserSessionService.set(null);
     if (error.errors && error.fields) {
       setFormErrors(formatFormErrors(error.errors));
